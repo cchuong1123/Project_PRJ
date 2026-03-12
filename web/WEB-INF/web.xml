@@ -12,6 +12,18 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
+        <url-pattern>/Customers</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/Parts</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/Orders</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
         <url-pattern>/views/*</url-pattern>
     </filter-mapping>
 
@@ -43,7 +55,35 @@
         <url-pattern>/Logout</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>CustomerController</servlet-name>
+        <servlet-class>controllers.CustomerController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CustomerController</servlet-name>
+        <url-pattern>/Customers</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PartController</servlet-name>
+        <servlet-class>controllers.PartController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PartController</servlet-name>
+        <url-pattern>/Parts</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RepairOrderController</servlet-name>
+        <servlet-class>controllers.RepairOrderController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RepairOrderController</servlet-name>
+        <url-pattern>/Orders</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 </web-app>
+

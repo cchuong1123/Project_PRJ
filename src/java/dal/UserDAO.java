@@ -37,4 +37,24 @@ public class UserDAO extends DBContext {
         }
         return null;
     }
+
+    public java.util.List<User> getMechanics() {
+        java.util.List<User> list = new java.util.ArrayList<>();
+        String sql = "SELECT UserID, Username, Password, FullName, Role, IsActive "
+                + "FROM Users WHERE Role = 'mechanic' AND IsActive = 1";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User u = new User();
+                u.setUserID(rs.getInt("UserID"));
+                u.setFullName(rs.getString("FullName"));
+                u.setRole(rs.getString("Role"));
+                list.add(u);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
 }

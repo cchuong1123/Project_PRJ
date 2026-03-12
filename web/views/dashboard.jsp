@@ -75,17 +75,17 @@
                             <a href="Dashboard" class="secondary-navbar-link active">
                                 <i class="bi bi-grid-1x2-fill"></i> Tổng quan
                             </a>
-                            <a href="#" class="secondary-navbar-link">
+                            <a href="Parts" class="secondary-navbar-link">
                                 <i class="bi bi-box-seam-fill"></i> Hàng hóa
                             </a>
-                            <a href="#" class="secondary-navbar-link">
+                            <a href="Orders" class="secondary-navbar-link">
                                 <i class="bi bi-receipt"></i> Đơn hàng
                             </a>
-                            <a href="#" class="secondary-navbar-link">
+                            <a href="Customers" class="secondary-navbar-link">
                                 <i class="bi bi-people-fill"></i> Khách hàng
                             </a>
                         </div>
-                        <a href="#" class="btn-create-order">
+                        <a href="Orders" class="btn-create-order">
                             <i class="bi bi-plus-lg"></i> Tạo đơn
                         </a>
                     </nav>
