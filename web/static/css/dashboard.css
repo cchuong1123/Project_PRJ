@@ -15,7 +15,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 32px;
-    background: var(--dark-bg-secondary);
+    background: var(--bg-secondary);
     border-bottom: 1px solid var(--card-border);
     position: sticky;
     top: 0;
@@ -54,7 +54,7 @@
 .top-navbar-brand-text {
     font-size: 1.15rem;
     font-weight: 800;
-    color: var(--text-white);
+    color: var(--text-heading);
 }
 
 .top-navbar-brand-text .blue {
@@ -96,7 +96,7 @@
 }
 
 .top-navbar-user-name {
-    color: var(--text-white);
+    color: var(--text-heading);
     font-size: var(--font-size-sm);
     font-weight: 600;
     line-height: 1.2;
@@ -131,6 +131,85 @@
     text-decoration: none;
 }
 
+/* --- Secondary Navbar --- */
+.secondary-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    background: linear-gradient(135deg, #1565c0, #1976d2, #2196f3);
+    position: sticky;
+    top: 61px;
+    z-index: 99;
+    box-shadow: 0 2px 8px rgba(21, 101, 192, 0.35);
+}
+
+.secondary-navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    height: 100%;
+}
+
+.secondary-navbar-link {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 14px 22px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    position: relative;
+    border-bottom: 3px solid transparent;
+}
+
+.secondary-navbar-link:hover {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+}
+
+.secondary-navbar-link.active {
+    color: #fff;
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid #fff;
+}
+
+.secondary-navbar-link i {
+    font-size: 1rem;
+}
+
+.btn-create-order {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    background: #ffffff;
+    color: #1565c0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-create-order:hover {
+    background: #e3f2fd;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    color: #0d47a1;
+}
+
+.btn-create-order i {
+    font-size: 0.9rem;
+    font-weight: 900;
+}
+
 /* --- Main content area --- */
 .dashboard-main {
     flex: 1;
@@ -155,7 +234,7 @@
     right: -10%;
     width: 300px;
     height: 300px;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.06);
     border-radius: 50%;
 }
 
@@ -230,7 +309,7 @@
     align-items: center;
     gap: 12px;
     padding: 24px 16px;
-    background: var(--dark-bg-secondary);
+    background: var(--bg-secondary);
     border: 1px solid var(--card-border);
     border-radius: var(--radius-lg);
     text-decoration: none;
@@ -240,7 +319,7 @@
 
 .quick-action-card:hover {
     border-color: var(--primary);
-    background: var(--dark-bg-tertiary);
+    background: var(--bg-tertiary);
     transform: translateY(-2px);
     text-decoration: none;
 }
@@ -276,7 +355,7 @@
 }
 
 .quick-action-card span {
-    color: var(--text-light);
+    color: var(--text-primary);
     font-size: var(--font-size-sm);
     font-weight: 500;
 }
@@ -287,21 +366,22 @@
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .quick-actions {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
     .dashboard-main {
         padding: 20px;
+    }
+
+    .secondary-navbar {
+        padding: 0 16px;
+    }
+
+    .secondary-navbar-link {
+        padding: 12px 14px;
+        font-size: 0.8rem;
     }
 }
 
 @media (max-width: 576px) {
     .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .quick-actions {
         grid-template-columns: 1fr;
     }
 
@@ -316,4 +396,52 @@
     .welcome-banner {
         padding: 24px 20px;
     }
+
+    .secondary-navbar {
+        padding: 0 10px;
+        overflow-x: auto;
+    }
+
+    .secondary-navbar-link {
+        padding: 10px 12px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
+    .secondary-navbar-link i {
+        display: none;
+    }
+
+    .btn-create-order {
+        padding: 6px 14px;
+        font-size: 0.78rem;
+        white-space: nowrap;
+    }
+}
+
+/* --- Dashboard Light Theme Enhancements --- */
+.top-navbar {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.top-navbar-avatar {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.welcome-banner {
+    box-shadow: 0 4px 16px rgba(52, 120, 246, 0.2);
+}
+
+.stat-card {
+    background: #ffffff;
+    box-shadow: var(--shadow-sm);
+}
+
+.stat-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    border-color: rgba(52, 120, 246, 0.2);
+}
+
+.table-wrapper {
+    box-shadow: var(--shadow-sm);
 }

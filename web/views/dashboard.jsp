@@ -61,11 +61,33 @@
                                     </span>
                                 </div>
                             </div>
+
                             <a href="Logout" class="btn-logout">
                                 <i class="bi bi-box-arrow-right"></i>
                                 Đăng xuất
                             </a>
                         </div>
+                    </nav>
+
+                    <!-- Secondary Navbar -->
+                    <nav class="secondary-navbar">
+                        <div class="secondary-navbar-links">
+                            <a href="Dashboard" class="secondary-navbar-link active">
+                                <i class="bi bi-grid-1x2-fill"></i> Tổng quan
+                            </a>
+                            <a href="#" class="secondary-navbar-link">
+                                <i class="bi bi-box-seam-fill"></i> Hàng hóa
+                            </a>
+                            <a href="#" class="secondary-navbar-link">
+                                <i class="bi bi-receipt"></i> Đơn hàng
+                            </a>
+                            <a href="#" class="secondary-navbar-link">
+                                <i class="bi bi-people-fill"></i> Khách hàng
+                            </a>
+                        </div>
+                        <a href="#" class="btn-create-order">
+                            <i class="bi bi-plus-lg"></i> Tạo đơn
+                        </a>
                     </nav>
 
                     <!-- Main Content -->
@@ -120,40 +142,7 @@
                             </div>
                         </div>
 
-                        <!-- Quick Actions -->
-                        <div class="section-header">
-                            <h2>Thao tác nhanh</h2>
-                        </div>
 
-                        <div class="quick-actions">
-                            <a href="#" class="quick-action-card">
-                                <div class="quick-action-icon blue">
-                                    <i class="bi bi-plus-circle-fill"></i>
-                                </div>
-                                <span>Tạo đơn sửa chữa</span>
-                            </a>
-
-                            <a href="#" class="quick-action-card">
-                                <div class="quick-action-icon green">
-                                    <i class="bi bi-person-plus-fill"></i>
-                                </div>
-                                <span>Thêm khách hàng</span>
-                            </a>
-
-                            <a href="#" class="quick-action-card">
-                                <div class="quick-action-icon orange">
-                                    <i class="bi bi-box-seam-fill"></i>
-                                </div>
-                                <span>Quản lý phụ tùng</span>
-                            </a>
-
-                            <a href="#" class="quick-action-card">
-                                <div class="quick-action-icon purple">
-                                    <i class="bi bi-bar-chart-fill"></i>
-                                </div>
-                                <span>Báo cáo thống kê</span>
-                            </a>
-                        </div>
 
                         <!-- Recent Repairs Table -->
                         <div class="section-header">
