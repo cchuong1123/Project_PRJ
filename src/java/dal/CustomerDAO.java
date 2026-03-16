@@ -102,6 +102,21 @@ public class CustomerDAO extends DBContext {
         return false;
     }
 
+    public Customer getCustomerByPhone(String phone) {
+        String sql = "SELECT * FROM Customers WHERE Phone = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, phone);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return mapRow(rs);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     private Customer mapRow(ResultSet rs) throws SQLException {
         Customer c = new Customer();
         c.setCustomerID(rs.getInt("CustomerID"));

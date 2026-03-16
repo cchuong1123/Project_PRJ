@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class RepairOrderController extends HttpServlet {
@@ -43,17 +44,39 @@ public class RepairOrderController extends HttpServlet {
         String status = request.getParameter("status");
         String keyword = request.getParameter("keyword");
         RepairOrderDAO dao = new RepairOrderDAO();
-        List<RepairOrder> orders;
+        List<RepairOrder> allOrders;
 
         if (keyword != null && !keyword.trim().isEmpty()) {
-            orders = dao.searchOrders(keyword.trim());
+            allOrders = dao.searchOrders(keyword.trim());
             request.setAttribute("keyword", keyword.trim());
         } else if (status != null && !status.isEmpty()) {
-            orders = dao.getOrdersByStatus(status);
+            allOrders = dao.getOrdersByStatus(status);
             request.setAttribute("filterStatus", status);
         } else {
-            orders = dao.getAllOrders();
+            allOrders = dao.getAllOrders();
         }
+
+        // Pagination (10 per page)
+        int pageSize = 10;
+        int totalItems = allOrders.size();
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+        if (totalPages < 1) totalPages = 1;
+
+        int currentPage = 1;
+        String pageParam = request.getParameter("page");
+        if (pageParam != null) {
+            try { currentPage = Integer.parseInt(pageParam); } catch (NumberFormatException e) { /* ignore */ }
+        }
+        if (currentPage < 1) currentPage = 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        int fromIndex = (currentPage - 1) * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, totalItems);
+        List<RepairOrder> orders = allOrders.subList(fromIndex, toIndex);
+
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("totalOrders", totalItems);
 
         // Load data for "Tạo đơn" form
         request.setAttribute("allVehicles", new VehicleDAO().getAllVehicles());
@@ -75,7 +98,7 @@ public class RepairOrderController extends HttpServlet {
             o.setVehicleID(Integer.parseInt(request.getParameter("vehicleID")));
             o.setMechanicID(Integer.parseInt(request.getParameter("mechanicID")));
             o.setDescription(request.getParameter("description"));
-            o.setLaborCost(Double.parseDouble(request.getParameter("laborCost")));
+            o.setLaborCost(0);
             o.setStatus("Tiếp nhận");
             new RepairOrderDAO().addOrder(o);
             response.sendRedirect("Orders");
@@ -90,19 +113,40 @@ public class RepairOrderController extends HttpServlet {
             int orderId = Integer.parseInt(request.getParameter("orderID"));
             int partId = Integer.parseInt(request.getParameter("partID"));
             int qty = Integer.parseInt(request.getParameter("quantity"));
-            // Get current unit price from Parts table
+            // Get current unit price and warranty months from Parts table
             Part part = new PartDAO().getPartById(partId);
-            double price = part != null ? part.getUnitPrice() : 0;
-            new OrderPartDAO().addPart(orderId, partId, qty, price);
+            // Backend stock validation
+            if (part == null || qty > part.getStockQty()) {
+                response.sendRedirect("Orders?action=detail&id=" + orderId);
+                return;
+            }
+            double price = part.getUnitPrice();
+            // Auto-calculate warranty end date
+            String warrantyEndDate = null;
+            if (part.getWarrantyMonths() > 0) {
+                warrantyEndDate = LocalDate.now().plusMonths(part.getWarrantyMonths()).toString();
+            }
+            new OrderPartDAO().addPart(orderId, partId, qty, price, warrantyEndDate);
+            response.sendRedirect("Orders?action=detail&id=" + orderId);
+
+        } else if ("updateWarranty".equals(action)) {
+            int orderId = Integer.parseInt(request.getParameter("orderID"));
+            int partId = Integer.parseInt(request.getParameter("partID"));
+            String warrantyEndDate = request.getParameter("warrantyEndDate");
+            new OrderPartDAO().updateWarrantyEndDate(orderId, partId, warrantyEndDate);
             response.sendRedirect("Orders?action=detail&id=" + orderId);
 
         } else if ("createInvoice".equals(action)) {
             int orderId = Integer.parseInt(request.getParameter("orderID"));
             String paymentMethod = request.getParameter("paymentMethod");
-            // Calculate total: labor + parts
+            double laborCost = Double.parseDouble(request.getParameter("laborCost"));
+            // Update laborCost on the order
             RepairOrder order = new RepairOrderDAO().getOrderById(orderId);
+            order.setLaborCost(laborCost);
+            new RepairOrderDAO().updateOrder(order);
+            // Calculate total: labor + parts
             double partsTotal = new OrderPartDAO().getTotalPartsAmount(orderId);
-            double total = order.getLaborCost() + partsTotal;
+            double total = laborCost + partsTotal;
             new InvoiceDAO().createInvoice(orderId, total, paymentMethod);
             // Auto update status to "Hoàn thành"
             new RepairOrderDAO().updateStatus(orderId, "Hoàn thành");

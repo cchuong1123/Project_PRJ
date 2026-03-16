@@ -13,7 +13,8 @@ public class RepairOrderDAO extends DBContext {
 
     private static final String SELECT_ALL =
             "SELECT ro.*, v.LicensePlate, ISNULL(v.Brand,'') + ' ' + ISNULL(v.Model,'') AS VehicleInfo, "
-            + "c.FullName AS CustomerName, c.Phone AS CustomerPhone, u.FullName AS MechanicName "
+            + "c.FullName AS CustomerName, c.Phone AS CustomerPhone, u.FullName AS MechanicName, "
+            + "ISNULL((SELECT SUM(op.Quantity * op.UnitPrice) FROM OrderParts op WHERE op.OrderID = ro.OrderID), 0) AS PartsTotal "
             + "FROM RepairOrders ro "
             + "JOIN Vehicles v ON ro.VehicleID = v.VehicleID "
             + "JOIN Customers c ON v.CustomerID = c.CustomerID "
@@ -105,16 +106,33 @@ public class RepairOrderDAO extends DBContext {
     }
 
     public boolean deleteOrder(int id) {
-        // Delete order parts first, then the order
+        // Restore stock for all parts in this order, then delete
         try {
+            // 1. Restore stock quantities
+            PreparedStatement psGet = connection.prepareStatement(
+                    "SELECT PartID, Quantity FROM OrderParts WHERE OrderID = ?");
+            psGet.setInt(1, id);
+            ResultSet rs = psGet.executeQuery();
+            PreparedStatement psStock = connection.prepareStatement(
+                    "UPDATE Parts SET StockQty = StockQty + ? WHERE PartID = ?");
+            while (rs.next()) {
+                psStock.setInt(1, rs.getInt("Quantity"));
+                psStock.setInt(2, rs.getInt("PartID"));
+                psStock.addBatch();
+            }
+            psStock.executeBatch();
+
+            // 2. Delete order parts
             PreparedStatement ps1 = connection.prepareStatement("DELETE FROM OrderParts WHERE OrderID = ?");
             ps1.setInt(1, id);
             ps1.executeUpdate();
 
+            // 3. Delete invoices
             PreparedStatement ps2 = connection.prepareStatement("DELETE FROM Invoices WHERE OrderID = ?");
             ps2.setInt(1, id);
             ps2.executeUpdate();
 
+            // 4. Delete order
             PreparedStatement ps3 = connection.prepareStatement("DELETE FROM RepairOrders WHERE OrderID = ?");
             ps3.setInt(1, id);
             return ps3.executeUpdate() > 0;
@@ -155,6 +173,7 @@ public class RepairOrderDAO extends DBContext {
         o.setCustomerName(rs.getString("CustomerName"));
         o.setCustomerPhone(rs.getString("CustomerPhone"));
         o.setMechanicName(rs.getString("MechanicName"));
+        try { o.setPartsTotal(rs.getDouble("PartsTotal")); } catch (SQLException e) { /* PartsTotal not in query */ }
         return o;
     }
 }

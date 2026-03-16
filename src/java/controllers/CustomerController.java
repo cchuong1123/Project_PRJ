@@ -67,44 +67,78 @@ public class CustomerController extends HttpServlet {
         String action = request.getParameter("action");
 
         if ("addCustomer".equals(action)) {
+            String phone = request.getParameter("phone");
+            CustomerDAO custDao = new CustomerDAO();
+            // Check duplicate phone
+            Customer existing = custDao.getCustomerByPhone(phone);
+            if (existing != null) {
+                response.sendRedirect("Customers?error=phone_exists");
+                return;
+            }
             Customer c = new Customer();
             c.setFullName(request.getParameter("fullName"));
-            c.setPhone(request.getParameter("phone"));
+            c.setPhone(phone);
             c.setAddress(request.getParameter("address"));
             c.setEmail(request.getParameter("email"));
-            new CustomerDAO().addCustomer(c);
+            custDao.addCustomer(c);
             response.sendRedirect("Customers");
 
         } else if ("editCustomer".equals(action)) {
+            int customerId = Integer.parseInt(request.getParameter("customerID"));
+            String phone = request.getParameter("phone");
+            CustomerDAO custDao = new CustomerDAO();
+            // Check duplicate phone (exclude self)
+            Customer existing = custDao.getCustomerByPhone(phone);
+            if (existing != null && existing.getCustomerID() != customerId) {
+                response.sendRedirect("Customers?error=phone_exists");
+                return;
+            }
             Customer c = new Customer();
-            c.setCustomerID(Integer.parseInt(request.getParameter("customerID")));
+            c.setCustomerID(customerId);
             c.setFullName(request.getParameter("fullName"));
-            c.setPhone(request.getParameter("phone"));
+            c.setPhone(phone);
             c.setAddress(request.getParameter("address"));
             c.setEmail(request.getParameter("email"));
-            new CustomerDAO().updateCustomer(c);
+            custDao.updateCustomer(c);
             response.sendRedirect("Customers");
 
         } else if ("addVehicle".equals(action)) {
             int cid = Integer.parseInt(request.getParameter("customerID"));
+            String plate = request.getParameter("licensePlate");
+            VehicleDAO vehDao = new VehicleDAO();
+            // Check duplicate plate
+            Vehicle existingV = vehDao.getVehicleByPlate(plate);
+            if (existingV != null) {
+                response.sendRedirect("Customers?expandId=" + cid + "&error=plate_exists");
+                return;
+            }
             Vehicle v = new Vehicle();
             v.setCustomerID(cid);
-            v.setLicensePlate(request.getParameter("licensePlate"));
+            v.setLicensePlate(plate);
             v.setBrand(request.getParameter("brand"));
             v.setModel(request.getParameter("model"));
             v.setManufactureYear(Integer.parseInt(request.getParameter("manufactureYear")));
-            new VehicleDAO().addVehicle(v);
+            vehDao.addVehicle(v);
             response.sendRedirect("Customers?expandId=" + cid);
 
         } else if ("editVehicle".equals(action)) {
             int cid = Integer.parseInt(request.getParameter("customerID"));
+            int vid = Integer.parseInt(request.getParameter("vehicleID"));
+            String plate = request.getParameter("licensePlate");
+            VehicleDAO vehDao = new VehicleDAO();
+            // Check duplicate plate (exclude self)
+            Vehicle existingV = vehDao.getVehicleByPlate(plate);
+            if (existingV != null && existingV.getVehicleID() != vid) {
+                response.sendRedirect("Customers?expandId=" + cid + "&error=plate_exists");
+                return;
+            }
             Vehicle v = new Vehicle();
-            v.setVehicleID(Integer.parseInt(request.getParameter("vehicleID")));
-            v.setLicensePlate(request.getParameter("licensePlate"));
+            v.setVehicleID(vid);
+            v.setLicensePlate(plate);
             v.setBrand(request.getParameter("brand"));
             v.setModel(request.getParameter("model"));
             v.setManufactureYear(Integer.parseInt(request.getParameter("manufactureYear")));
-            new VehicleDAO().updateVehicle(v);
+            vehDao.updateVehicle(v);
             response.sendRedirect("Customers?expandId=" + cid);
 
         } else {

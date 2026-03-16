@@ -81,6 +81,20 @@
             <!-- Main Content -->
             <main class="dashboard-main">
 
+                <!-- Error Alert -->
+                <c:if test="${param.error == 'phone_exists'}">
+                    <div style="background:#fff3f3; border:1px solid #e74c3c; color:#c0392b; padding:12px 16px; border-radius:8px; margin-bottom:16px; display:flex; align-items:center; gap:8px; font-size:var(--font-size-sm)">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <span>Số điện thoại này đã tồn tại trong hệ thống. Vui lòng nhập số khác.</span>
+                    </div>
+                </c:if>
+                <c:if test="${param.error == 'plate_exists'}">
+                    <div style="background:#fff3f3; border:1px solid #e74c3c; color:#c0392b; padding:12px 16px; border-radius:8px; margin-bottom:16px; display:flex; align-items:center; gap:8px; font-size:var(--font-size-sm)">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <span>Biển số xe này đã tồn tại trong hệ thống. Vui lòng nhập biển số khác.</span>
+                    </div>
+                </c:if>
+
                 <!-- Summary Cards -->
                 <div class="customers-summary">
                     <div class="summary-card">

@@ -60,14 +60,16 @@ public class PartDAO extends DBContext {
     }
 
     public boolean addPart(Part p) {
-        String sql = "INSERT INTO Parts (PartName, SKU, StockQty, UnitPrice, MinStock) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Parts (PartName, SKU, StockQty, ImportPrice, UnitPrice, MinStock, WarrantyMonths) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, p.getPartName());
             ps.setString(2, p.getSku());
             ps.setInt(3, p.getStockQty());
-            ps.setDouble(4, p.getUnitPrice());
-            ps.setInt(5, p.getMinStock());
+            ps.setDouble(4, p.getImportPrice());
+            ps.setDouble(5, p.getUnitPrice());
+            ps.setInt(6, p.getMinStock());
+            ps.setInt(7, p.getWarrantyMonths());
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(PartDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -76,15 +78,17 @@ public class PartDAO extends DBContext {
     }
 
     public boolean updatePart(Part p) {
-        String sql = "UPDATE Parts SET PartName = ?, SKU = ?, StockQty = ?, UnitPrice = ?, MinStock = ? WHERE PartID = ?";
+        String sql = "UPDATE Parts SET PartName = ?, SKU = ?, StockQty = ?, ImportPrice = ?, UnitPrice = ?, MinStock = ?, WarrantyMonths = ? WHERE PartID = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, p.getPartName());
             ps.setString(2, p.getSku());
             ps.setInt(3, p.getStockQty());
-            ps.setDouble(4, p.getUnitPrice());
-            ps.setInt(5, p.getMinStock());
-            ps.setInt(6, p.getPartID());
+            ps.setDouble(4, p.getImportPrice());
+            ps.setDouble(5, p.getUnitPrice());
+            ps.setInt(6, p.getMinStock());
+            ps.setInt(7, p.getWarrantyMonths());
+            ps.setInt(8, p.getPartID());
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(PartDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,8 +114,10 @@ public class PartDAO extends DBContext {
         p.setPartName(rs.getString("PartName"));
         p.setSku(rs.getString("SKU"));
         p.setStockQty(rs.getInt("StockQty"));
+        p.setImportPrice(rs.getDouble("ImportPrice"));
         p.setUnitPrice(rs.getDouble("UnitPrice"));
         p.setMinStock(rs.getInt("MinStock"));
+        p.setWarrantyMonths(rs.getInt("WarrantyMonths"));
         return p;
     }
 }

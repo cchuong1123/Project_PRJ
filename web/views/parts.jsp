@@ -150,8 +150,10 @@
                                     <th>Tên phụ tùng</th>
                                     <th>Mã SKU</th>
                                     <th>Tồn kho</th>
-                                    <th>Đơn giá</th>
+                                    <th>Giá nhập</th>
+                                    <th>Giá bán</th>
                                     <th>Ngưỡng tối thiểu</th>
+                                    <th>BH (tháng)</th>
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>
@@ -175,15 +177,29 @@
                                             </c:choose>
                                         </td>
                                         <td class="price">
+                                            <fmt:formatNumber value="${p.importPrice}" type="number"
+                                                groupingUsed="true"/>đ
+                                        </td>
+                                        <td class="price">
                                             <fmt:formatNumber value="${p.unitPrice}" type="number"
                                                 groupingUsed="true"/>đ
                                         </td>
                                         <td>${p.minStock}</td>
                                         <td>
+                                            <c:choose>
+                                                <c:when test="${p.warrantyMonths > 0}">
+                                                    ${p.warrantyMonths} tháng
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span style="color:var(--text-muted)">—</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>
                                             <div class="table-actions">
                                                 <button class="btn btn-outline btn-icon-sm"
                                                     title="Sửa"
-                                                    onclick="openEditModal(${p.partID}, '${p.partName}', '${p.sku}', ${p.stockQty}, ${p.unitPrice}, ${p.minStock})">
+                                                    onclick="openEditModal(${p.partID}, '${p.partName}', '${p.sku}', ${p.stockQty}, ${p.importPrice}, ${p.unitPrice}, ${p.minStock}, ${p.warrantyMonths})">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
                                                 <a href="Parts?action=delete&id=${p.partID}"
@@ -198,7 +214,7 @@
                                 </c:forEach>
                                 <c:if test="${empty parts}">
                                     <tr>
-                                        <td colspan="7" class="text-center" style="padding:40px;">
+                                        <td colspan="8" class="text-center" style="padding:40px;">
                                             <div class="empty-state">
                                                 <i class="bi bi-inbox" style="display:block"></i>
                                                 <h3>Không tìm thấy phụ tùng</h3>
@@ -237,21 +253,33 @@
                                 <input type="text" class="form-input-plain" name="sku" id="formSku" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Đơn giá (VNĐ) *</label>
+                                <label class="form-label">Tồn kho *</label>
+                                <input type="number" class="form-input-plain" name="stockQty" id="formStockQty"
+                                    min="0" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Giá nhập (VNĐ) *</label>
+                                <input type="number" class="form-input-plain" name="importPrice" id="formImportPrice"
+                                    step="1000" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Giá bán (VNĐ) *</label>
                                 <input type="number" class="form-input-plain" name="unitPrice" id="formUnitPrice"
                                     step="1000" min="0" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label">Tồn kho *</label>
-                                <input type="number" class="form-input-plain" name="stockQty" id="formStockQty"
-                                    min="0" required>
-                            </div>
-                            <div class="form-group">
                                 <label class="form-label">Ngưỡng tối thiểu</label>
                                 <input type="number" class="form-input-plain" name="minStock" id="formMinStock"
                                     min="0" value="5">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Bảo hành (tháng)</label>
+                                <input type="number" class="form-input-plain" name="warrantyMonths" id="formWarrantyMonths"
+                                    min="0" value="0" placeholder="0 = không bảo hành">
                             </div>
                         </div>
 
@@ -274,21 +302,25 @@
                     document.getElementById('formPartName').value = '';
                     document.getElementById('formSku').value = '';
                     document.getElementById('formStockQty').value = '';
+                    document.getElementById('formImportPrice').value = '';
                     document.getElementById('formUnitPrice').value = '';
                     document.getElementById('formMinStock').value = '5';
+                    document.getElementById('formWarrantyMonths').value = '0';
                     document.getElementById('modalSubmitBtn').innerHTML = '<i class="bi bi-plus-lg"></i> Thêm';
                     document.getElementById('partModal').classList.add('active');
                 }
 
-                function openEditModal(id, name, sku, qty, price, min) {
+                function openEditModal(id, name, sku, qty, importPrice, price, min, warranty) {
                     document.getElementById('modalTitle').textContent = 'Sửa phụ tùng';
                     document.getElementById('formAction').value = 'editPart';
                     document.getElementById('formPartID').value = id;
                     document.getElementById('formPartName').value = name;
                     document.getElementById('formSku').value = sku;
                     document.getElementById('formStockQty').value = qty;
+                    document.getElementById('formImportPrice').value = importPrice;
                     document.getElementById('formUnitPrice').value = price;
                     document.getElementById('formMinStock').value = min;
+                    document.getElementById('formWarrantyMonths').value = warranty;
                     document.getElementById('modalSubmitBtn').innerHTML = '<i class="bi bi-check-lg"></i> Lưu';
                     document.getElementById('partModal').classList.add('active');
                 }

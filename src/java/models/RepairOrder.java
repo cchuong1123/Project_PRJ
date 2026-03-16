@@ -17,6 +17,7 @@ public class RepairOrder {
     private String vehiclePlate;
     private String vehicleInfo; // Brand + Model
     private String mechanicName;
+    private double partsTotal;
 
     public RepairOrder() {
     }
@@ -56,4 +57,7 @@ public class RepairOrder {
 
     public String getMechanicName() { return mechanicName; }
     public void setMechanicName(String mechanicName) { this.mechanicName = mechanicName; }
+
+    public double getPartsTotal() { return partsTotal; }
+    public void setPartsTotal(double partsTotal) { this.partsTotal = partsTotal; }
 }

@@ -52,8 +52,11 @@ public class PartController extends HttpServlet {
             p.setPartName(request.getParameter("partName"));
             p.setSku(request.getParameter("sku"));
             p.setStockQty(Integer.parseInt(request.getParameter("stockQty")));
+            p.setImportPrice(Double.parseDouble(request.getParameter("importPrice")));
             p.setUnitPrice(Double.parseDouble(request.getParameter("unitPrice")));
             p.setMinStock(Integer.parseInt(request.getParameter("minStock")));
+            String wm = request.getParameter("warrantyMonths");
+            p.setWarrantyMonths(wm != null && !wm.isEmpty() ? Integer.parseInt(wm) : 0);
             new PartDAO().addPart(p);
             response.sendRedirect("Parts");
 
@@ -63,8 +66,11 @@ public class PartController extends HttpServlet {
             p.setPartName(request.getParameter("partName"));
             p.setSku(request.getParameter("sku"));
             p.setStockQty(Integer.parseInt(request.getParameter("stockQty")));
+            p.setImportPrice(Double.parseDouble(request.getParameter("importPrice")));
             p.setUnitPrice(Double.parseDouble(request.getParameter("unitPrice")));
             p.setMinStock(Integer.parseInt(request.getParameter("minStock")));
+            String wm = request.getParameter("warrantyMonths");
+            p.setWarrantyMonths(wm != null && !wm.isEmpty() ? Integer.parseInt(wm) : 0);
             new PartDAO().updatePart(p);
             response.sendRedirect("Parts");
 

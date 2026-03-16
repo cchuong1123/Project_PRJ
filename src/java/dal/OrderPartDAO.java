@@ -13,7 +13,7 @@ public class OrderPartDAO extends DBContext {
 
     public List<OrderPart> getPartsByOrder(int orderID) {
         List<OrderPart> list = new ArrayList<>();
-        String sql = "SELECT op.*, p.PartName, p.SKU FROM OrderParts op "
+        String sql = "SELECT op.*, p.PartName, p.SKU, p.WarrantyMonths FROM OrderParts op "
                 + "JOIN Parts p ON op.PartID = p.PartID WHERE op.OrderID = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -27,6 +27,9 @@ public class OrderPartDAO extends DBContext {
                 op.setUnitPrice(rs.getDouble("UnitPrice"));
                 op.setPartName(rs.getString("PartName"));
                 op.setSku(rs.getString("SKU"));
+                op.setWarrantyMonths(rs.getInt("WarrantyMonths"));
+                String wed = rs.getString("WarrantyEndDate");
+                op.setWarrantyEndDate(wed);
                 list.add(op);
             }
         } catch (SQLException ex) {
@@ -35,20 +38,25 @@ public class OrderPartDAO extends DBContext {
         return list;
     }
 
-    public boolean addPart(int orderID, int partID, int quantity, double unitPrice) {
+    public boolean addPart(int orderID, int partID, int quantity, double unitPrice, String warrantyEndDate) {
         // Use MERGE to handle duplicate (update quantity if exists)
         String sql = "MERGE OrderParts AS target "
-                + "USING (VALUES (?, ?, ?, ?)) AS source (OrderID, PartID, Quantity, UnitPrice) "
+                + "USING (VALUES (?, ?, ?, ?, ?)) AS source (OrderID, PartID, Quantity, UnitPrice, WarrantyEndDate) "
                 + "ON target.OrderID = source.OrderID AND target.PartID = source.PartID "
                 + "WHEN MATCHED THEN UPDATE SET Quantity = target.Quantity + source.Quantity "
-                + "WHEN NOT MATCHED THEN INSERT (OrderID, PartID, Quantity, UnitPrice) "
-                + "VALUES (source.OrderID, source.PartID, source.Quantity, source.UnitPrice);";
+                + "WHEN NOT MATCHED THEN INSERT (OrderID, PartID, Quantity, UnitPrice, WarrantyEndDate) "
+                + "VALUES (source.OrderID, source.PartID, source.Quantity, source.UnitPrice, source.WarrantyEndDate);";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, orderID);
             ps.setInt(2, partID);
             ps.setInt(3, quantity);
             ps.setDouble(4, unitPrice);
+            if (warrantyEndDate != null && !warrantyEndDate.isEmpty()) {
+                ps.setString(5, warrantyEndDate);
+            } else {
+                ps.setNull(5, java.sql.Types.DATE);
+            }
             ps.executeUpdate();
 
             // Decrease stock
@@ -60,6 +68,24 @@ public class OrderPartDAO extends DBContext {
             ps2.executeUpdate();
 
             return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderPartDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public boolean updateWarrantyEndDate(int orderID, int partID, String warrantyEndDate) {
+        String sql = "UPDATE OrderParts SET WarrantyEndDate = ? WHERE OrderID = ? AND PartID = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            if (warrantyEndDate != null && !warrantyEndDate.isEmpty()) {
+                ps.setString(1, warrantyEndDate);
+            } else {
+                ps.setNull(1, java.sql.Types.DATE);
+            }
+            ps.setInt(2, orderID);
+            ps.setInt(3, partID);
+            return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(OrderPartDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
