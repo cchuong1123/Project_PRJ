@@ -1,6 +1,7 @@
 <%-- Document : login Created on : Mar 11, 2026, 12:20:24 AM Author : Admin --%>
 
     <%@page contentType="text/html" pageEncoding="UTF-8" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <!DOCTYPE html>
         <html lang="vi">
 
@@ -46,15 +47,12 @@
                     </div>
 
                     <!-- Error message -->
-                    <% String error=(String) request.getAttribute("error"); %>
-                        <% if (error !=null) { %>
-                            <div class="alert alert-error anim-shake">
-                                <i class="bi bi-exclamation-triangle-fill"></i>
-                                <span>
-                                    <%= error %>
-                                </span>
-                            </div>
-                            <% } %>
+                    <c:if test="${not empty error}">
+                        <div class="alert alert-error anim-shake">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            <span>${error}</span>
+                        </div>
+                    </c:if>
 
                                 <form action="Login" method="POST" id="loginForm">
                                     <!-- Username -->

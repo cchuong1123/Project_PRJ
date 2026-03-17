@@ -40,6 +40,23 @@ public class RepairOrderController extends HttpServlet {
             return;
         }
 
+        if ("createOrder".equals(action)) {
+            request.setAttribute("allVehicles", new VehicleDAO().getAllVehicles());
+            request.setAttribute("mechanics", new UserDAO().getMechanics());
+            request.setAttribute("activePage", "orders");
+            request.getRequestDispatcher("views/order-form.jsp").forward(request, response);
+            return;
+        }
+
+        if ("addPart".equals(action)) {
+            String orderId = request.getParameter("orderId");
+            request.setAttribute("orderID", orderId);
+            request.setAttribute("allParts", new PartDAO().getAllParts());
+            request.setAttribute("activePage", "orders");
+            request.getRequestDispatcher("views/order-add-part.jsp").forward(request, response);
+            return;
+        }
+
         // List / Filter / Search
         String status = request.getParameter("status");
         String keyword = request.getParameter("keyword");
@@ -60,15 +77,21 @@ public class RepairOrderController extends HttpServlet {
         int pageSize = 10;
         int totalItems = allOrders.size();
         int totalPages = (int) Math.ceil((double) totalItems / pageSize);
-        if (totalPages < 1) totalPages = 1;
+        if (totalPages < 1)
+            totalPages = 1;
 
         int currentPage = 1;
         String pageParam = request.getParameter("page");
         if (pageParam != null) {
-            try { currentPage = Integer.parseInt(pageParam); } catch (NumberFormatException e) { /* ignore */ }
+            try {
+                currentPage = Integer.parseInt(pageParam);
+            } catch (NumberFormatException e) {
+                /* ignore */ }
         }
-        if (currentPage < 1) currentPage = 1;
-        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1)
+            currentPage = 1;
+        if (currentPage > totalPages)
+            currentPage = totalPages;
 
         int fromIndex = (currentPage - 1) * pageSize;
         int toIndex = Math.min(fromIndex + pageSize, totalItems);
@@ -78,10 +101,8 @@ public class RepairOrderController extends HttpServlet {
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("totalOrders", totalItems);
 
-        // Load data for "Tạo đơn" form
-        request.setAttribute("allVehicles", new VehicleDAO().getAllVehicles());
-        request.setAttribute("mechanics", new UserDAO().getMechanics());
         request.setAttribute("orders", orders);
+        request.setAttribute("activePage", "orders");
 
         RequestDispatcher rd = request.getRequestDispatcher("views/orders.jsp");
         rd.forward(request, response);
@@ -187,6 +208,7 @@ public class RepairOrderController extends HttpServlet {
         request.setAttribute("allVehicles", new VehicleDAO().getAllVehicles());
         request.setAttribute("mechanics", new UserDAO().getMechanics());
 
+        request.setAttribute("activePage", "order-detail");
         RequestDispatcher rd = request.getRequestDispatcher("views/order-detail.jsp");
         rd.forward(request, response);
     }

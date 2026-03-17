@@ -12,18 +12,43 @@ public class Invoice {
     public Invoice() {
     }
 
-    public int getInvoiceID() { return invoiceID; }
-    public void setInvoiceID(int invoiceID) { this.invoiceID = invoiceID; }
+    public int getInvoiceID() {
+        return invoiceID;
+    }
 
-    public int getOrderID() { return orderID; }
-    public void setOrderID(int orderID) { this.orderID = orderID; }
+    public void setInvoiceID(int invoiceID) {
+        this.invoiceID = invoiceID;
+    }
 
-    public double getTotalAmount() { return totalAmount; }
-    public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
+    public int getOrderID() {
+        return orderID;
+    }
 
-    public String getPaymentMethod() { return paymentMethod; }
-    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
+    }
 
-    public Timestamp getPaidAt() { return paidAt; }
-    public void setPaidAt(Timestamp paidAt) { this.paidAt = paidAt; }
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public Timestamp getPaidAt() {
+        return paidAt;
+    }
+
+    public void setPaidAt(Timestamp paidAt) {
+        this.paidAt = paidAt;
+    }
 }

@@ -3,6 +3,7 @@
     <%@page contentType="text/html" pageEncoding="UTF-8" %>
         <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+            <%@ taglib prefix="mt" tagdir="/WEB-INF/tags" %>
                 <!DOCTYPE html>
                 <html lang="vi">
 
@@ -26,65 +27,7 @@
 
                 <body class="dashboard-body">
 
-                    <% models.User user=(models.User) session.getAttribute("user"); String fullName=user !=null ?
-                        user.getFullName() : "Người dùng" ; String role=user !=null ? user.getRole() : "staff" ; String
-                        initial=fullName.length()> 0 ? fullName.substring(0, 1).toUpperCase() : "U";
-                        String roleDisplay = "Nhân viên";
-                        if ("admin".equals(role)) roleDisplay = "Quản trị viên";
-                        else if ("mechanic".equals(role)) roleDisplay = "Thợ sửa chữa";
-                        %>
-
-                        <!-- Top Navbar -->
-                        <nav class="top-navbar">
-                            <a href="Dashboard" class="top-navbar-brand">
-                                <div class="top-navbar-brand-icon">
-                                    <i class="bi bi-droplet-fill leaf-blue"></i>
-                                    <i class="bi bi-droplet-fill leaf-green"></i>
-                                </div>
-                                <span class="top-navbar-brand-text">
-                                    <span class="blue">Moto</span><span class="green">Fix</span> Pro
-                                </span>
-                            </a>
-                            <div class="top-navbar-right">
-                                <div class="top-navbar-user">
-                                    <div class="top-navbar-avatar">
-                                        <%= initial %>
-                                    </div>
-                                    <div class="top-navbar-user-info">
-                                        <span class="top-navbar-user-name">
-                                            <%= fullName %>
-                                        </span>
-                                        <span class="top-navbar-user-role">
-                                            <%= roleDisplay %>
-                                        </span>
-                                    </div>
-                                </div>
-                                <a href="Logout" class="btn-logout">
-                                    <i class="bi bi-box-arrow-right"></i> Đăng xuất
-                                </a>
-                            </div>
-                        </nav>
-
-                        <!-- Secondary Navbar -->
-                        <nav class="secondary-navbar">
-                            <div class="secondary-navbar-links">
-                                <a href="Dashboard" class="secondary-navbar-link">
-                                    <i class="bi bi-grid-1x2-fill"></i> Tổng quan
-                                </a>
-                                <a href="Parts" class="secondary-navbar-link">
-                                    <i class="bi bi-box-seam-fill"></i> Hàng hóa
-                                </a>
-                                <a href="Orders" class="secondary-navbar-link active">
-                                    <i class="bi bi-receipt"></i> Đơn hàng
-                                </a>
-                                <a href="Customers" class="secondary-navbar-link">
-                                    <i class="bi bi-people-fill"></i> Khách hàng
-                                </a>
-                            </div>
-                            <a href="Orders" class="btn-create-order">
-                                <i class="bi bi-arrow-left"></i> Danh sách
-                            </a>
-                        </nav>
+                    <jsp:include page="includes/navbar.jsp" />
 
                         <!-- Main Content -->
                         <main class="dashboard-main">
@@ -96,23 +39,7 @@
                             <div class="orders-header" style="margin-bottom: var(--spacing-md)">
                                 <h2>
                                     <i class="bi bi-receipt"></i> Phiếu #${order.orderID}
-                                    <c:set var="statusClass" value="" />
-                                    <c:if test="${order.status == 'Tiếp nhận'}">
-                                        <c:set var="statusClass" value="status-tiepnhan" />
-                                    </c:if>
-                                    <c:if test="${order.status == 'Đang sửa'}">
-                                        <c:set var="statusClass" value="status-dangsua" />
-                                    </c:if>
-                                    <c:if test="${order.status == 'Chờ phụ tùng'}">
-                                        <c:set var="statusClass" value="status-chophutung" />
-                                    </c:if>
-                                    <c:if test="${order.status == 'Hoàn thành'}">
-                                        <c:set var="statusClass" value="status-hoanthanh" />
-                                    </c:if>
-                                    <c:if test="${order.status == 'Đã giao'}">
-                                        <c:set var="statusClass" value="status-dagiao" />
-                                    </c:if>
-                                    <span class="status-badge ${statusClass}">${order.status}</span>
+                                    <mt:statusBadge status="${order.status}" />
                                 </h2>
                             </div>
 
@@ -233,9 +160,10 @@
                                             <h3 style="margin-bottom:0"><i class="bi bi-box-seam"></i> Phụ tùng sử dụng
                                             </h3>
                                             <c:if test="${order.status != 'Hoàn thành' && order.status != 'Đã giao'}">
-                                                <button class="btn btn-primary btn-sm" onclick="openAddPartModal()">
+                                                <a href="Orders?action=addPart&orderId=${order.orderID}"
+                                                    class="btn btn-primary btn-sm">
                                                     <i class="bi bi-plus-lg"></i> Thêm phụ tùng
-                                                </button>
+                                                </a>
                                             </c:if>
                                         </div>
                                         <table class="table-custom">
@@ -281,27 +209,40 @@
                                                         <td>
                                                             <c:choose>
                                                                 <c:when test="${not empty op.warrantyEndDate}">
-                                                                    <c:if test="${order.status != 'Hoàn thành' && order.status != 'Đã giao'}">
-                                                                        <form action="Orders" method="POST" style="display:flex; align-items:center; gap:4px">
-                                                                            <input type="hidden" name="action" value="updateWarranty">
-                                                                            <input type="hidden" name="orderID" value="${order.orderID}">
-                                                                            <input type="hidden" name="partID" value="${op.partID}">
-                                                                            <input type="date" name="warrantyEndDate" value="${op.warrantyEndDate}"
-                                                                                class="form-input-plain" style="font-size:var(--font-size-xs); padding:4px 6px; width:140px">
-                                                                            <button type="submit" class="btn btn-outline btn-icon-sm" title="Lưu BH">
+                                                                    <c:if
+                                                                        test="${order.status != 'Hoàn thành' && order.status != 'Đã giao'}">
+                                                                        <form action="Orders" method="POST"
+                                                                            style="display:flex; align-items:center; gap:4px">
+                                                                            <input type="hidden" name="action"
+                                                                                value="updateWarranty">
+                                                                            <input type="hidden" name="orderID"
+                                                                                value="${order.orderID}">
+                                                                            <input type="hidden" name="partID"
+                                                                                value="${op.partID}">
+                                                                            <input type="date" name="warrantyEndDate"
+                                                                                value="${op.warrantyEndDate}"
+                                                                                class="form-input-plain"
+                                                                                style="font-size:var(--font-size-xs); padding:4px 6px; width:140px">
+                                                                            <button type="submit"
+                                                                                class="btn btn-outline btn-icon-sm"
+                                                                                title="Lưu BH">
                                                                                 <i class="bi bi-check-lg"></i>
                                                                             </button>
                                                                         </form>
                                                                     </c:if>
-                                                                    <c:if test="${order.status == 'Hoàn thành' || order.status == 'Đã giao'}">
+                                                                    <c:if
+                                                                        test="${order.status == 'Hoàn thành' || order.status == 'Đã giao'}">
                                                                         <span style="font-size:var(--font-size-xs)">
-                                                                            <fmt:parseDate value="${op.warrantyEndDate}" pattern="yyyy-MM-dd" var="parsedDate" />
-                                                                            <fmt:formatDate value="${parsedDate}" pattern="dd/MM/yyyy" />
+                                                                            <fmt:parseDate value="${op.warrantyEndDate}"
+                                                                                pattern="yyyy-MM-dd" var="parsedDate" />
+                                                                            <fmt:formatDate value="${parsedDate}"
+                                                                                pattern="dd/MM/yyyy" />
                                                                         </span>
                                                                     </c:if>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <span style="color:var(--text-muted); font-size:var(--font-size-xs)">—</span>
+                                                                    <span
+                                                                        style="color:var(--text-muted); font-size:var(--font-size-xs)">—</span>
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </td>
@@ -461,100 +402,14 @@
                             </div>
                         </main>
 
-                        <!-- Add Part Modal -->
-                        <div class="modal-overlay" id="addPartModal">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h3><i class="bi bi-box-seam"></i> Thêm phụ tùng</h3>
-                                    <button class="modal-close" onclick="closePartModal()">
-                                        <i class="bi bi-x-lg"></i>
-                                    </button>
-                                </div>
-                                <form action="Orders" method="POST" class="modal-form">
-                                    <input type="hidden" name="action" value="addPart">
-                                    <input type="hidden" name="orderID" value="${order.orderID}">
-
-                                    <div class="form-group">
-                                        <label class="form-label">Chọn phụ tùng *</label>
-                                        <select class="form-input-plain" name="partID" id="partSelect" required onchange="onPartChange()">
-                                            <option value="" data-stock="0">-- Chọn phụ tùng --</option>
-                                            <c:forEach var="p" items="${allParts}">
-                                                <c:if test="${p.stockQty > 0}">
-                                                    <option value="${p.partID}" data-stock="${p.stockQty}">
-                                                        ${p.partName} (${p.sku}) — Tồn: ${p.stockQty} —
-                                                        <fmt:formatNumber value="${p.unitPrice}" type="number"
-                                                            groupingUsed="true" />đ
-                                                    </option>
-                                                </c:if>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Số lượng *</label>
-                                        <input type="number" class="form-input-plain" name="quantity" id="qtyInput" min="1" value="1"
-                                            required>
-                                        <small id="stockHint" style="color:var(--text-muted); font-size:var(--font-size-xs)"></small>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary btn-sm"
-                                            onclick="closePartModal()">Hủy</button>
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-plus-lg"></i> Thêm
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        <!-- Hidden input to pass partsTotal to inline JS -->
+                        <input type="hidden" id="partsTotalData" value="${partsTotal != null ? partsTotal : 0}">
 
                         <script
                             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
                         <script>
-                            function openAddPartModal() {
-                                document.getElementById('partSelect').selectedIndex = 0;
-                                document.getElementById('qtyInput').value = 1;
-                                document.getElementById('qtyInput').removeAttribute('max');
-                                document.getElementById('stockHint').textContent = '';
-                                document.getElementById('addPartModal').classList.add('active');
-                            }
-                            function closePartModal() {
-                                document.getElementById('addPartModal').classList.remove('active');
-                            }
-                            document.getElementById('addPartModal').addEventListener('click', function (e) {
-                                if (e.target === this) closePartModal();
-                            });
-
-                            // Update max quantity when part is selected
-                            function onPartChange() {
-                                var sel = document.getElementById('partSelect');
-                                var opt = sel.options[sel.selectedIndex];
-                                var stock = parseInt(opt.getAttribute('data-stock')) || 0;
-                                var qtyInput = document.getElementById('qtyInput');
-                                var hint = document.getElementById('stockHint');
-                                if (sel.value) {
-                                    qtyInput.max = stock;
-                                    qtyInput.value = 1;
-                                    hint.textContent = 'Tồn kho: ' + stock;
-                                } else {
-                                    qtyInput.removeAttribute('max');
-                                    hint.textContent = '';
-                                }
-                            }
-
-                            // Validate on form submit
-                            document.querySelector('#addPartModal form').addEventListener('submit', function(e) {
-                                var sel = document.getElementById('partSelect');
-                                var opt = sel.options[sel.selectedIndex];
-                                var stock = parseInt(opt.getAttribute('data-stock')) || 0;
-                                var qty = parseInt(document.getElementById('qtyInput').value) || 0;
-                                if (qty > stock) {
-                                    e.preventDefault();
-                                    alert('Số lượng (' + qty + ') vượt quá tồn kho (' + stock + ')!');
-                                }
-                            });
-
                             // Live update invoice total
-                            var partsTotal = ${ partsTotal != null ? partsTotal : 0};
+                            var partsTotal = parseFloat(document.getElementById('partsTotalData').value) || 0;
                             function updateInvoiceTotal() {
                                 var laborInput = document.getElementById('laborCostInput');
                                 if (!laborInput) return;
@@ -565,7 +420,6 @@
                                 if (laborDisplay) laborDisplay.textContent = labor.toLocaleString('vi-VN') + 'đ';
                                 if (totalDisplay) totalDisplay.textContent = total.toLocaleString('vi-VN') + 'đ';
                             }
-                            // Init on page load
                             updateInvoiceTotal();
                         </script>
                 </body>

@@ -25,6 +25,21 @@ public class PartController extends HttpServlet {
             return;
         }
 
+        if ("addPart".equals(action)) {
+            request.setAttribute("activePage", "parts");
+            request.getRequestDispatcher("views/part-form.jsp").forward(request, response);
+            return;
+        }
+
+        if ("editPart".equals(action)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Part part = new PartDAO().getPartById(id);
+            request.setAttribute("part", part);
+            request.setAttribute("activePage", "parts");
+            request.getRequestDispatcher("views/part-form.jsp").forward(request, response);
+            return;
+        }
+
         // List / Search
         String keyword = request.getParameter("keyword");
         PartDAO dao = new PartDAO();
@@ -37,6 +52,7 @@ public class PartController extends HttpServlet {
         }
 
         request.setAttribute("parts", parts);
+        request.setAttribute("activePage", "parts");
         RequestDispatcher rd = request.getRequestDispatcher("views/parts.jsp");
         rd.forward(request, response);
     }

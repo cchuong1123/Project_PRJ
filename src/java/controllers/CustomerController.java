@@ -35,6 +35,38 @@ public class CustomerController extends HttpServlet {
             return;
         }
 
+        if ("addCustomer".equals(action)) {
+            request.setAttribute("activePage", "customers");
+            request.getRequestDispatcher("views/customer-form.jsp").forward(request, response);
+            return;
+        }
+
+        if ("editCustomer".equals(action)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Customer customer = new CustomerDAO().getCustomerById(id);
+            request.setAttribute("customer", customer);
+            request.setAttribute("activePage", "customers");
+            request.getRequestDispatcher("views/customer-form.jsp").forward(request, response);
+            return;
+        }
+
+        if ("addVehicle".equals(action)) {
+            request.setAttribute("customerID", request.getParameter("cid"));
+            request.setAttribute("activePage", "customers");
+            request.getRequestDispatcher("views/vehicle-form.jsp").forward(request, response);
+            return;
+        }
+
+        if ("editVehicle".equals(action)) {
+            int vid = Integer.parseInt(request.getParameter("vid"));
+            Vehicle vehicle = new VehicleDAO().getVehicleById(vid);
+            request.setAttribute("vehicle", vehicle);
+            request.setAttribute("customerID", request.getParameter("cid"));
+            request.setAttribute("activePage", "customers");
+            request.getRequestDispatcher("views/vehicle-form.jsp").forward(request, response);
+            return;
+        }
+
         // List / Search
         String keyword = request.getParameter("keyword");
         CustomerDAO dao = new CustomerDAO();
@@ -56,6 +88,7 @@ public class CustomerController extends HttpServlet {
         }
 
         request.setAttribute("customers", customers);
+        request.setAttribute("activePage", "customers");
         RequestDispatcher rd = request.getRequestDispatcher("views/customers.jsp");
         rd.forward(request, response);
     }

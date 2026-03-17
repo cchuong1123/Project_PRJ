@@ -22,6 +22,7 @@ public class DashboardController extends HttpServlet {
 
         User user = (User) session.getAttribute("user");
         request.setAttribute("user", user);
+        request.setAttribute("activePage", "dashboard");
         RequestDispatcher rd = request.getRequestDispatcher("views/dashboard.jsp");
         rd.forward(request, response);
     }

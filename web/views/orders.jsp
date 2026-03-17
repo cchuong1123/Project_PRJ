@@ -3,6 +3,7 @@
     <%@page contentType="text/html" pageEncoding="UTF-8" %>
         <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+            <%@ taglib prefix="mt" tagdir="/WEB-INF/tags" %>
                 <!DOCTYPE html>
                 <html lang="vi">
 
@@ -22,71 +23,11 @@
                     <link href="static/css/style.css" rel="stylesheet">
                     <link href="static/css/dashboard.css" rel="stylesheet">
                     <link href="static/css/orders.css" rel="stylesheet">
-                    <!-- Select2 CSS -->
-                    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
                 </head>
 
                 <body class="dashboard-body">
 
-                    <% models.User user=(models.User) session.getAttribute("user"); String fullName=user !=null ?
-                        user.getFullName() : "Người dùng" ; String role=user !=null ? user.getRole() : "staff" ; String
-                        initial=fullName.length()> 0 ? fullName.substring(0, 1).toUpperCase() : "U";
-                        String roleDisplay = "Nhân viên";
-                        if ("admin".equals(role)) roleDisplay = "Quản trị viên";
-                        else if ("mechanic".equals(role)) roleDisplay = "Thợ sửa chữa";
-                        %>
-
-                        <!-- Top Navbar -->
-                        <nav class="top-navbar">
-                            <a href="Dashboard" class="top-navbar-brand">
-                                <div class="top-navbar-brand-icon">
-                                    <i class="bi bi-droplet-fill leaf-blue"></i>
-                                    <i class="bi bi-droplet-fill leaf-green"></i>
-                                </div>
-                                <span class="top-navbar-brand-text">
-                                    <span class="blue">Moto</span><span class="green">Fix</span> Pro
-                                </span>
-                            </a>
-                            <div class="top-navbar-right">
-                                <div class="top-navbar-user">
-                                    <div class="top-navbar-avatar">
-                                        <%= initial %>
-                                    </div>
-                                    <div class="top-navbar-user-info">
-                                        <span class="top-navbar-user-name">
-                                            <%= fullName %>
-                                        </span>
-                                        <span class="top-navbar-user-role">
-                                            <%= roleDisplay %>
-                                        </span>
-                                    </div>
-                                </div>
-                                <a href="Logout" class="btn-logout">
-                                    <i class="bi bi-box-arrow-right"></i> Đăng xuất
-                                </a>
-                            </div>
-                        </nav>
-
-                        <!-- Secondary Navbar -->
-                        <nav class="secondary-navbar">
-                            <div class="secondary-navbar-links">
-                                <a href="Dashboard" class="secondary-navbar-link">
-                                    <i class="bi bi-grid-1x2-fill"></i> Tổng quan
-                                </a>
-                                <a href="Parts" class="secondary-navbar-link">
-                                    <i class="bi bi-box-seam-fill"></i> Hàng hóa
-                                </a>
-                                <a href="Orders" class="secondary-navbar-link active">
-                                    <i class="bi bi-receipt"></i> Đơn hàng
-                                </a>
-                                <a href="Customers" class="secondary-navbar-link">
-                                    <i class="bi bi-people-fill"></i> Khách hàng
-                                </a>
-                            </div>
-                            <button class="btn-create-order" onclick="openCreateModal()">
-                                <i class="bi bi-plus-lg"></i> Tạo đơn
-                            </button>
-                        </nav>
+                    <jsp:include page="includes/navbar.jsp" />
 
                         <!-- Main Content -->
                         <main class="dashboard-main">
@@ -163,9 +104,9 @@
                                         <input type="text" name="keyword" placeholder="Tìm theo KH, biển số, SĐT..."
                                             value="${keyword}">
                                     </form>
-                                    <button class="btn btn-primary btn-sm" onclick="openCreateModal()">
+                                    <a href="Orders?action=createOrder" class="btn btn-primary btn-sm">
                                         <i class="bi bi-plus-lg"></i> Tạo đơn mới
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
 
@@ -206,23 +147,7 @@
                                                 </td>
                                                 <td>${o.mechanicName}</td>
                                                 <td>
-                                                    <c:set var="statusClass" value="" />
-                                                    <c:if test="${o.status == 'Tiếp nhận'}">
-                                                        <c:set var="statusClass" value="status-tiepnhan" />
-                                                    </c:if>
-                                                    <c:if test="${o.status == 'Đang sửa'}">
-                                                        <c:set var="statusClass" value="status-dangsua" />
-                                                    </c:if>
-                                                    <c:if test="${o.status == 'Chờ phụ tùng'}">
-                                                        <c:set var="statusClass" value="status-chophutung" />
-                                                    </c:if>
-                                                    <c:if test="${o.status == 'Hoàn thành'}">
-                                                        <c:set var="statusClass" value="status-hoanthanh" />
-                                                    </c:if>
-                                                    <c:if test="${o.status == 'Đã giao'}">
-                                                        <c:set var="statusClass" value="status-dagiao" />
-                                                    </c:if>
-                                                    <span class="status-badge ${statusClass}">${o.status}</span>
+                                                    <mt:statusBadge status="${o.status}" />
                                                 </td>
                                                 <td style="font-weight:600">
                                                     <fmt:formatNumber value="${o.partsTotal}" type="number"
@@ -297,102 +222,8 @@
                             </c:if>
                         </main>
 
-                        <!-- Create Order Modal -->
-                        <div class="modal-overlay" id="createOrderModal">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h3><i class="bi bi-plus-circle"></i> Tạo phiếu sửa chữa</h3>
-                                    <button class="modal-close" onclick="closeCreateModal()">
-                                        <i class="bi bi-x-lg"></i>
-                                    </button>
-                                </div>
-                                <form action="Orders" method="POST" class="modal-form">
-                                    <input type="hidden" name="action" value="create">
-
-                                    <div class="form-group">
-                                        <label class="form-label">Chọn xe (Biển số — Khách hàng) *</label>
-                                        <select class="form-input-plain" name="vehicleID" id="vehicleSelect" required>
-                                            <option value="">-- Chọn xe --</option>
-                                            <c:forEach var="v" items="${allVehicles}">
-                                                <option value="${v.vehicleID}">
-                                                    ${v.licensePlate} — ${v.customerName}
-                                                    <c:if test="${not empty v.brand}"> (${v.brand} ${v.model})</c:if>
-                                                </option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label">Thợ phụ trách *</label>
-                                        <select class="form-input-plain" name="mechanicID" required>
-                                            <option value="">-- Chọn thợ --</option>
-                                            <c:forEach var="m" items="${mechanics}">
-                                                <option value="${m.userID}">${m.fullName}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label">Mô tả sự cố</label>
-                                        <textarea class="form-input-plain" name="description" rows="3"
-                                            placeholder="Mô tả tình trạng xe, yêu cầu sửa chữa..."></textarea>
-                                    </div>
-
-
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary btn-sm"
-                                            onclick="closeCreateModal()">Hủy</button>
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-plus-lg"></i> Tạo phiếu
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
                         <script
                             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-                        <!-- jQuery + Select2 JS -->
-                        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-                        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-                        <script>
-                            function openCreateModal() {
-                                document.getElementById('createOrderModal').classList.add('active');
-                                // Re-init Select2 mỗi khi mở modal (fix width)
-                                setTimeout(function() {
-                                    $('#vehicleSelect').select2({
-                                        placeholder: '-- Tìm và chọn xe --',
-                                        allowClear: true,
-                                        width: '100%',
-                                        dropdownParent: $('#createOrderModal .modal-content'),
-                                        language: {
-                                            noResults: function() { return 'Không tìm thấy xe phù hợp'; },
-                                            searching: function() { return 'Đang tìm...'; }
-                                        }
-                                    });
-                                }, 50);
-                            }
-                            function closeCreateModal() {
-                                document.getElementById('createOrderModal').classList.remove('active');
-                            }
-                            document.getElementById('createOrderModal').addEventListener('click', function (e) {
-                                if (e.target === this) closeCreateModal();
-                            });
-
-                            // Init Select2 khi trang load
-                            $(document).ready(function() {
-                                $('#vehicleSelect').select2({
-                                    placeholder: '-- Tìm và chọn xe --',
-                                    allowClear: true,
-                                    width: '100%',
-                                    dropdownParent: $('#createOrderModal .modal-content'),
-                                    language: {
-                                        noResults: function() { return 'Không tìm thấy xe phù hợp'; },
-                                        searching: function() { return 'Đang tìm...'; }
-                                    }
-                                });
-                            });
-                        </script>
                 </body>
 
                 </html>

@@ -87,6 +87,22 @@ public class VehicleDAO extends DBContext {
         return false;
     }
 
+    public Vehicle getVehicleById(int id) {
+        String sql = "SELECT v.*, c.FullName AS CustomerName FROM Vehicles v "
+                + "JOIN Customers c ON v.CustomerID = c.CustomerID WHERE v.VehicleID = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return mapRow(rs);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VehicleDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public Vehicle getVehicleByPlate(String plate) {
         String sql = "SELECT v.*, c.FullName AS CustomerName FROM Vehicles v "
                 + "JOIN Customers c ON v.CustomerID = c.CustomerID WHERE v.LicensePlate = ?";

@@ -23,60 +23,7 @@
 
         <body class="dashboard-body">
 
-            <% models.User user=(models.User) session.getAttribute("user");
-                String fullName=user != null ? user.getFullName() : "Người dùng";
-                String role=user != null ? user.getRole() : "staff";
-                String initial=fullName.length() > 0 ? fullName.substring(0, 1).toUpperCase() : "U";
-                String roleDisplay = "Nhân viên";
-                if ("admin".equals(role)) roleDisplay = "Quản trị viên";
-                else if ("mechanic".equals(role)) roleDisplay = "Thợ sửa chữa";
-            %>
-
-            <!-- Top Navbar -->
-            <nav class="top-navbar">
-                <a href="Dashboard" class="top-navbar-brand">
-                    <div class="top-navbar-brand-icon">
-                        <i class="bi bi-droplet-fill leaf-blue"></i>
-                        <i class="bi bi-droplet-fill leaf-green"></i>
-                    </div>
-                    <span class="top-navbar-brand-text">
-                        <span class="blue">Moto</span><span class="green">Fix</span> Pro
-                    </span>
-                </a>
-                <div class="top-navbar-right">
-                    <div class="top-navbar-user">
-                        <div class="top-navbar-avatar"><%= initial %></div>
-                        <div class="top-navbar-user-info">
-                            <span class="top-navbar-user-name"><%= fullName %></span>
-                            <span class="top-navbar-user-role"><%= roleDisplay %></span>
-                        </div>
-                    </div>
-                    <a href="Logout" class="btn-logout">
-                        <i class="bi bi-box-arrow-right"></i> Đăng xuất
-                    </a>
-                </div>
-            </nav>
-
-            <!-- Secondary Navbar -->
-            <nav class="secondary-navbar">
-                <div class="secondary-navbar-links">
-                    <a href="Dashboard" class="secondary-navbar-link">
-                        <i class="bi bi-grid-1x2-fill"></i> Tổng quan
-                    </a>
-                    <a href="Parts" class="secondary-navbar-link">
-                        <i class="bi bi-box-seam-fill"></i> Hàng hóa
-                    </a>
-                    <a href="Orders" class="secondary-navbar-link">
-                        <i class="bi bi-receipt"></i> Đơn hàng
-                    </a>
-                    <a href="Customers" class="secondary-navbar-link active">
-                        <i class="bi bi-people-fill"></i> Khách hàng
-                    </a>
-                </div>
-                <a href="Orders" class="btn-create-order">
-                    <i class="bi bi-plus-lg"></i> Tạo đơn
-                </a>
-            </nav>
+            <jsp:include page="includes/navbar.jsp" />
 
             <!-- Main Content -->
             <main class="dashboard-main">
@@ -132,9 +79,9 @@
                             <input type="text" name="keyword" placeholder="Tìm theo tên, SĐT..."
                                 value="${keyword}">
                         </form>
-                        <button class="btn btn-primary btn-sm" onclick="openAddCustomerModal()">
+                        <a href="Customers?action=addCustomer" class="btn btn-primary btn-sm">
                             <i class="bi bi-plus-lg"></i> Thêm khách hàng
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -179,11 +126,10 @@
                                     </td>
                                     <td>
                                         <div class="table-actions">
-                                            <button class="btn btn-outline btn-icon-sm"
-                                                title="Sửa"
-                                                onclick="openEditCustomerModal(${c.customerID}, '${c.fullName}', '${c.phone}', '${c.address}', '${c.email}')">
+                                            <a href="Customers?action=editCustomer&id=${c.customerID}"
+                                                class="btn btn-outline btn-icon-sm" title="Sửa">
                                                 <i class="bi bi-pencil-square"></i>
-                                            </button>
+                                            </a>
                                             <a href="Customers?action=delete&id=${c.customerID}"
                                                 class="btn btn-danger btn-icon-sm"
                                                 title="Xóa"
@@ -200,10 +146,10 @@
                                         <td colspan="7">
                                             <div class="vehicle-sub-header">
                                                 <span><i class="bi bi-bicycle"></i> Xe của ${c.fullName}</span>
-                                                <button class="btn btn-primary btn-sm"
-                                                    onclick="openAddVehicleModal(${c.customerID})">
+                                                <a href="Customers?action=addVehicle&cid=${c.customerID}"
+                                                    class="btn btn-primary btn-sm">
                                                     <i class="bi bi-plus-lg"></i> Thêm xe
-                                                </button>
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>
@@ -221,11 +167,10 @@
                                                     <td>${v.manufactureYear}</td>
                                                     <td>
                                                         <div class="table-actions">
-                                                            <button class="btn btn-outline btn-icon-sm"
-                                                                title="Sửa xe"
-                                                                onclick="openEditVehicleModal(${v.vehicleID}, ${c.customerID}, '${v.licensePlate}', '${v.brand}', '${v.model}', ${v.manufactureYear})">
+                                                            <a href="Customers?action=editVehicle&vid=${v.vehicleID}&cid=${c.customerID}"
+                                                                class="btn btn-outline btn-icon-sm" title="Sửa xe">
                                                                 <i class="bi bi-pencil-square"></i>
-                                                            </button>
+                                                            </a>
                                                             <a href="Customers?action=deleteVehicle&vid=${v.vehicleID}&cid=${c.customerID}"
                                                                 class="btn btn-danger btn-icon-sm"
                                                                 title="Xóa xe"
@@ -264,161 +209,6 @@
 
             </main>
 
-            <!-- Customer Modal -->
-            <div class="modal-overlay" id="customerModal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 id="custModalTitle">Thêm khách hàng</h3>
-                        <button class="modal-close" onclick="closeCustModal()">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                    </div>
-                    <form action="Customers" method="POST" class="modal-form">
-                        <input type="hidden" name="action" id="custFormAction" value="addCustomer">
-                        <input type="hidden" name="customerID" id="custFormID">
-
-                        <div class="form-group">
-                            <label class="form-label">Họ tên *</label>
-                            <input type="text" class="form-input-plain" name="fullName" id="custFormName" required>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Số điện thoại *</label>
-                                <input type="text" class="form-input-plain" name="phone" id="custFormPhone" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-input-plain" name="email" id="custFormEmail">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Địa chỉ</label>
-                            <input type="text" class="form-input-plain" name="address" id="custFormAddress">
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="closeCustModal()">Hủy</button>
-                            <button type="submit" class="btn btn-primary btn-sm" id="custSubmitBtn">
-                                <i class="bi bi-plus-lg"></i> Thêm
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Vehicle Modal -->
-            <div class="modal-overlay" id="vehicleModal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 id="vehModalTitle">Thêm xe</h3>
-                        <button class="modal-close" onclick="closeVehModal()">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                    </div>
-                    <form action="Customers" method="POST" class="modal-form">
-                        <input type="hidden" name="action" id="vehFormAction" value="addVehicle">
-                        <input type="hidden" name="customerID" id="vehFormCustID">
-                        <input type="hidden" name="vehicleID" id="vehFormID">
-
-                        <div class="form-group">
-                            <label class="form-label">Biển số *</label>
-                            <input type="text" class="form-input-plain" name="licensePlate" id="vehFormPlate" required>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Hãng xe</label>
-                                <input type="text" class="form-input-plain" name="brand" id="vehFormBrand">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Mẫu xe</label>
-                                <input type="text" class="form-input-plain" name="model" id="vehFormModel">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Năm sản xuất</label>
-                            <input type="number" class="form-input-plain" name="manufactureYear" id="vehFormYear"
-                                min="1990" max="2030" value="2024">
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="closeVehModal()">Hủy</button>
-                            <button type="submit" class="btn btn-primary btn-sm" id="vehSubmitBtn">
-                                <i class="bi bi-plus-lg"></i> Thêm
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-            <script>
-                // --- Customer Modal ---
-                function openAddCustomerModal() {
-                    document.getElementById('custModalTitle').textContent = 'Thêm khách hàng';
-                    document.getElementById('custFormAction').value = 'addCustomer';
-                    document.getElementById('custFormID').value = '';
-                    document.getElementById('custFormName').value = '';
-                    document.getElementById('custFormPhone').value = '';
-                    document.getElementById('custFormEmail').value = '';
-                    document.getElementById('custFormAddress').value = '';
-                    document.getElementById('custSubmitBtn').innerHTML = '<i class="bi bi-plus-lg"></i> Thêm';
-                    document.getElementById('customerModal').classList.add('active');
-                }
-
-                function openEditCustomerModal(id, name, phone, address, email) {
-                    document.getElementById('custModalTitle').textContent = 'Sửa khách hàng';
-                    document.getElementById('custFormAction').value = 'editCustomer';
-                    document.getElementById('custFormID').value = id;
-                    document.getElementById('custFormName').value = name;
-                    document.getElementById('custFormPhone').value = phone;
-                    document.getElementById('custFormAddress').value = address || '';
-                    document.getElementById('custFormEmail').value = email || '';
-                    document.getElementById('custSubmitBtn').innerHTML = '<i class="bi bi-check-lg"></i> Lưu';
-                    document.getElementById('customerModal').classList.add('active');
-                }
-
-                function closeCustModal() {
-                    document.getElementById('customerModal').classList.remove('active');
-                }
-
-                // --- Vehicle Modal ---
-                function openAddVehicleModal(custId) {
-                    document.getElementById('vehModalTitle').textContent = 'Thêm xe';
-                    document.getElementById('vehFormAction').value = 'addVehicle';
-                    document.getElementById('vehFormCustID').value = custId;
-                    document.getElementById('vehFormID').value = '';
-                    document.getElementById('vehFormPlate').value = '';
-                    document.getElementById('vehFormBrand').value = '';
-                    document.getElementById('vehFormModel').value = '';
-                    document.getElementById('vehFormYear').value = '2024';
-                    document.getElementById('vehSubmitBtn').innerHTML = '<i class="bi bi-plus-lg"></i> Thêm';
-                    document.getElementById('vehicleModal').classList.add('active');
-                }
-
-                function openEditVehicleModal(vid, cid, plate, brand, model, year) {
-                    document.getElementById('vehModalTitle').textContent = 'Sửa xe';
-                    document.getElementById('vehFormAction').value = 'editVehicle';
-                    document.getElementById('vehFormCustID').value = cid;
-                    document.getElementById('vehFormID').value = vid;
-                    document.getElementById('vehFormPlate').value = plate;
-                    document.getElementById('vehFormBrand').value = brand || '';
-                    document.getElementById('vehFormModel').value = model || '';
-                    document.getElementById('vehFormYear').value = year;
-                    document.getElementById('vehSubmitBtn').innerHTML = '<i class="bi bi-check-lg"></i> Lưu';
-                    document.getElementById('vehicleModal').classList.add('active');
-                }
-
-                function closeVehModal() {
-                    document.getElementById('vehicleModal').classList.remove('active');
-                }
-
-                // Close modals on overlay click
-                document.getElementById('customerModal').addEventListener('click', function(e) {
-                    if (e.target === this) closeCustModal();
-                });
-                document.getElementById('vehicleModal').addEventListener('click', function(e) {
-                    if (e.target === this) closeVehModal();
-                });
-            </script>
         </body>
         </html>

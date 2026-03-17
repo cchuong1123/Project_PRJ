@@ -26,76 +26,14 @@
 
             <body class="dashboard-body">
 
-                <% models.User user=(models.User) session.getAttribute("user"); String fullName=user !=null ?
-                    user.getFullName() : "Người dùng" ; String role=user !=null ? user.getRole() : "staff" ; String
-                    initial=fullName.length()> 0 ? fullName.substring(0, 1).toUpperCase() : "U";
-
-                    String roleDisplay = "Nhân viên";
-                    if ("admin".equals(role)) roleDisplay = "Quản trị viên";
-                    else if ("mechanic".equals(role)) roleDisplay = "Thợ sửa chữa";
-                    %>
-
-                    <!-- Top Navbar -->
-                    <nav class="top-navbar">
-                        <a href="Dashboard" class="top-navbar-brand">
-                            <div class="top-navbar-brand-icon">
-                                <i class="bi bi-droplet-fill leaf-blue"></i>
-                                <i class="bi bi-droplet-fill leaf-green"></i>
-                            </div>
-                            <span class="top-navbar-brand-text">
-                                <span class="blue">Moto</span><span class="green">Fix</span> Pro
-                            </span>
-                        </a>
-
-                        <div class="top-navbar-right">
-                            <div class="top-navbar-user">
-                                <div class="top-navbar-avatar">
-                                    <%= initial %>
-                                </div>
-                                <div class="top-navbar-user-info">
-                                    <span class="top-navbar-user-name">
-                                        <%= fullName %>
-                                    </span>
-                                    <span class="top-navbar-user-role">
-                                        <%= roleDisplay %>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <a href="Logout" class="btn-logout">
-                                <i class="bi bi-box-arrow-right"></i>
-                                Đăng xuất
-                            </a>
-                        </div>
-                    </nav>
-
-                    <!-- Secondary Navbar -->
-                    <nav class="secondary-navbar">
-                        <div class="secondary-navbar-links">
-                            <a href="Dashboard" class="secondary-navbar-link active">
-                                <i class="bi bi-grid-1x2-fill"></i> Tổng quan
-                            </a>
-                            <a href="Parts" class="secondary-navbar-link">
-                                <i class="bi bi-box-seam-fill"></i> Hàng hóa
-                            </a>
-                            <a href="Orders" class="secondary-navbar-link">
-                                <i class="bi bi-receipt"></i> Đơn hàng
-                            </a>
-                            <a href="Customers" class="secondary-navbar-link">
-                                <i class="bi bi-people-fill"></i> Khách hàng
-                            </a>
-                        </div>
-                        <a href="Orders" class="btn-create-order">
-                            <i class="bi bi-plus-lg"></i> Tạo đơn
-                        </a>
-                    </nav>
+                    <jsp:include page="includes/navbar.jsp" />
 
                     <!-- Main Content -->
                     <main class="dashboard-main">
 
                         <!-- Welcome Banner -->
                         <div class="welcome-banner anim-slide-up">
-                            <h1><i class="bi bi-hand-thumbs-up-fill"></i> Xin chào, <%= fullName %>!</h1>
+                            <h1><i class="bi bi-hand-thumbs-up-fill"></i> Xin chào, ${sessionScope.user.fullName}!</h1>
                             <p>Chào mừng bạn đến với hệ thống quản lý cửa hàng sửa chữa xe máy MotoFix Pro.</p>
                         </div>
 
