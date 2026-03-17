@@ -70,13 +70,38 @@ public class CustomerController extends HttpServlet {
         // List / Search
         String keyword = request.getParameter("keyword");
         CustomerDAO dao = new CustomerDAO();
-        List<Customer> customers;
+        List<Customer> allCustomers;
         if (keyword != null && !keyword.trim().isEmpty()) {
-            customers = dao.searchCustomers(keyword.trim());
+            allCustomers = dao.searchCustomers(keyword.trim());
             request.setAttribute("keyword", keyword.trim());
         } else {
-            customers = dao.getAllCustomers();
+            allCustomers = dao.getAllCustomers();
         }
+
+        // Pagination (10 per page)
+        int pageSize = 10;
+        int totalItems = allCustomers.size();
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+        if (totalPages < 1) totalPages = 1;
+
+        int currentPage = 1;
+        String pageParam = request.getParameter("page");
+        if (pageParam != null) {
+            try {
+                currentPage = Integer.parseInt(pageParam);
+            } catch (NumberFormatException e) {
+                /* ignore */ }
+        }
+        if (currentPage < 1) currentPage = 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        int fromIndex = (currentPage - 1) * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, totalItems);
+        List<Customer> customers = allCustomers.subList(fromIndex, toIndex);
+
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("totalCustomers", totalItems);
 
         // Load vehicles for expanded customer
         String expandIdStr = request.getParameter("expandId");

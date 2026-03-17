@@ -43,6 +43,9 @@
         <a href="Customers" class="secondary-navbar-link ${activePage == 'customers' ? 'active' : ''}">
             <i class="bi bi-people-fill"></i> Khách hàng
         </a>
+        <a href="Reports" class="secondary-navbar-link ${activePage == 'reports' ? 'active' : ''}">
+            <i class="bi bi-bar-chart-line-fill"></i> Báo cáo
+        </a>
     </div>
     <c:choose>
         <c:when test="${activePage == 'order-detail'}">
@@ -51,7 +54,7 @@
             </a>
         </c:when>
         <c:otherwise>
-            <a href="Orders?action=createForm" class="btn-create-order">
+            <a href="Orders?action=createOrder" class="btn-create-order">
                 <i class="bi bi-plus-lg"></i> Tạo đơn
             </a>
         </c:otherwise>

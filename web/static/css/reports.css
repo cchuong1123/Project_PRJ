@@ -1,0 +1,321 @@
+/* ============================================================
+   REPORTS.CSS - Revenue Report Page Styles
+   MotoFix Pro
+   ============================================================ */
+
+/* --- Page Header ------------------------------------------- */
+.report-header {
+    margin-bottom: var(--spacing-lg);
+}
+
+.report-header h1 {
+    font-size: var(--font-size-2xl);
+    color: var(--text-heading);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.report-header h1 i {
+    color: var(--primary);
+}
+
+.report-subtitle {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    margin-top: 4px;
+    margin-bottom: 0 !important;
+}
+
+
+/* --- Filter Section ---------------------------------------- */
+.report-filters {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.filter-quick-btns {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-muted);
+    background: rgba(0, 0, 0, 0.03);
+    border: 1.5px solid transparent;
+    text-decoration: none;
+    transition: all var(--transition-base);
+    cursor: pointer;
+}
+
+.filter-btn:hover {
+    color: var(--primary);
+    background: rgba(52, 120, 246, 0.06);
+    border-color: rgba(52, 120, 246, 0.15);
+    text-decoration: none;
+}
+
+.filter-btn.active {
+    color: var(--primary);
+    background: rgba(52, 120, 246, 0.1);
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(52, 120, 246, 0.15);
+}
+
+.filter-btn i {
+    font-size: var(--font-size-base);
+}
+
+.filter-custom {
+    display: flex;
+    align-items: center;
+}
+
+.filter-form {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--spacing-sm);
+}
+
+.filter-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.filter-input-group label {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-date-input {
+    padding: 8px 12px !important;
+    font-size: var(--font-size-sm) !important;
+    min-width: 150px;
+}
+
+.filter-submit-btn {
+    height: 38px;
+    padding: 0 16px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+
+/* --- Summary Cards ----------------------------------------- */
+.report-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.report-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-base);
+}
+
+.report-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.report-card.revenue-card {
+    background: linear-gradient(135deg, rgba(52, 120, 246, 0.05), rgba(22, 163, 74, 0.05));
+    border-color: rgba(52, 120, 246, 0.15);
+}
+
+.report-card-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.report-card-icon.blue {
+    background: rgba(52, 120, 246, 0.12);
+    color: var(--primary);
+}
+
+.report-card-icon.green {
+    background: var(--success-light);
+    color: var(--success);
+}
+
+.report-card-icon.orange {
+    background: var(--warning-light);
+    color: var(--warning);
+}
+
+.report-card-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.report-card-value {
+    font-size: var(--font-size-xl);
+    font-weight: 800;
+    color: var(--text-heading);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+.report-card-label {
+    font-size: var(--font-size-xs);
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+
+/* --- Table Section ----------------------------------------- */
+.report-table-section {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.report-table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--card-border);
+}
+
+.report-table-header h2 {
+    font-size: var(--font-size-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin: 0;
+}
+
+.report-table-header h2 i {
+    color: var(--primary);
+}
+
+.report-table-count {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    font-weight: 500;
+    background: rgba(0, 0, 0, 0.04);
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+}
+
+.report-table-section .table-wrapper {
+    border-radius: 0;
+}
+
+.report-table-section .table-custom {
+    border-radius: 0;
+}
+
+.invoice-id {
+    font-weight: 700;
+    color: var(--text-heading);
+}
+
+.order-link {
+    font-weight: 600;
+    color: var(--primary) !important;
+    text-decoration: none !important;
+    transition: all var(--transition-base);
+}
+
+.order-link:hover {
+    color: var(--primary-dark) !important;
+    text-decoration: underline !important;
+}
+
+
+/* --- Payment Badges ---------------------------------------- */
+.payment-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+.payment-badge.cash {
+    background: var(--success-light);
+    color: var(--success);
+}
+
+.payment-badge.transfer {
+    background: rgba(52, 120, 246, 0.1);
+    color: var(--primary);
+}
+
+.payment-badge.other {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-muted);
+}
+
+.payment-badge i {
+    font-size: var(--font-size-sm);
+}
+
+
+/* --- Responsive -------------------------------------------- */
+@media (max-width: 768px) {
+    .report-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .report-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-quick-btns {
+        flex-wrap: wrap;
+    }
+
+    .filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-date-input {
+        min-width: auto;
+    }
+}

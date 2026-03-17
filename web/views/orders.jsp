@@ -3,31 +3,31 @@
     <%@page contentType="text/html" pageEncoding="UTF-8" %>
         <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-            <%@ taglib prefix="mt" tagdir="/WEB-INF/tags" %>
-                <!DOCTYPE html>
-                <html lang="vi">
+                <%@ taglib prefix="mt" tagdir="/WEB-INF/tags" %>
+                    <!DOCTYPE html>
+                    <html lang="vi">
 
-                <head>
-                    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Đơn hàng - MotoFix Pro</title>
+                    <head>
+                        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Đơn hàng - MotoFix Pro</title>
 
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-                        rel="stylesheet">
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-                        rel="stylesheet">
-                    <link
-                        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-                        rel="stylesheet">
+                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+                            rel="stylesheet">
+                        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+                            rel="stylesheet">
+                        <link
+                            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+                            rel="stylesheet">
 
-                    <link href="static/css/style.css" rel="stylesheet">
-                    <link href="static/css/dashboard.css" rel="stylesheet">
-                    <link href="static/css/orders.css" rel="stylesheet">
-                </head>
+                        <link href="static/css/style.css" rel="stylesheet">
+                        <link href="static/css/dashboard.css" rel="stylesheet">
+                        <link href="static/css/orders.css" rel="stylesheet">
+                    </head>
 
-                <body class="dashboard-body">
+                    <body class="dashboard-body">
 
-                    <jsp:include page="includes/navbar.jsp" />
+                        <jsp:include page="includes/navbar.jsp" />
 
                         <!-- Main Content -->
                         <main class="dashboard-main">
@@ -121,7 +121,7 @@
                                             <th>Thợ phụ trách</th>
                                             <th>Trạng thái</th>
                                             <th>Tiền phụ tùng</th>
-                                            <th>Công thợ</th>
+                                            <th>Phí Dịch Vụ</th>
                                             <th>Ngày tạo</th>
                                             <th>Khách phải trả</th>
                                             <th>Thao tác</th>
@@ -161,8 +161,8 @@
                                                     <fmt:formatDate value="${o.createdAt}" pattern="dd/MM/yyyy HH:mm" />
                                                 </td>
                                                 <td style="font-weight:700; color:var(--primary)">
-                                                    <fmt:formatNumber value="${o.partsTotal + o.laborCost}" type="number"
-                                                        groupingUsed="true" />đ
+                                                    <fmt:formatNumber value="${o.partsTotal + o.laborCost}"
+                                                        type="number" groupingUsed="true" />đ
                                                 </td>
                                                 <td>
                                                     <div class="table-actions">
@@ -196,25 +196,32 @@
 
                             <!-- Pagination -->
                             <c:if test="${totalPages > 1}">
-                                <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:var(--spacing-lg); padding:var(--spacing-md) 0">
+                                <div
+                                    style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:var(--spacing-lg); padding:var(--spacing-md) 0">
                                     <c:set var="pageParams" value="" />
-                                    <c:if test="${not empty filterStatus}"><c:set var="pageParams" value="&status=${filterStatus}" /></c:if>
-                                    <c:if test="${not empty keyword}"><c:set var="pageParams" value="&keyword=${keyword}" /></c:if>
+                                    <c:if test="${not empty filterStatus}">
+                                        <c:set var="pageParams" value="&status=${filterStatus}" />
+                                    </c:if>
+                                    <c:if test="${not empty keyword}">
+                                        <c:set var="pageParams" value="&keyword=${keyword}" />
+                                    </c:if>
 
                                     <c:if test="${currentPage > 1}">
-                                        <a href="Orders?page=${currentPage - 1}${pageParams}" class="btn btn-outline btn-sm">
+                                        <a href="Orders?page=${currentPage - 1}${pageParams}"
+                                            class="btn btn-outline btn-sm">
                                             <i class="bi bi-chevron-left"></i> Trước
                                         </a>
                                     </c:if>
 
                                     <c:forEach var="i" begin="1" end="${totalPages}">
                                         <a href="Orders?page=${i}${pageParams}"
-                                           class="btn btn-sm ${i == currentPage ? 'btn-primary' : 'btn-outline'}"
-                                           style="min-width:36px; text-align:center">${i}</a>
+                                            class="btn btn-sm ${i == currentPage ? 'btn-primary' : 'btn-outline'}"
+                                            style="min-width:36px; text-align:center">${i}</a>
                                     </c:forEach>
 
                                     <c:if test="${currentPage < totalPages}">
-                                        <a href="Orders?page=${currentPage + 1}${pageParams}" class="btn btn-outline btn-sm">
+                                        <a href="Orders?page=${currentPage + 1}${pageParams}"
+                                            class="btn btn-outline btn-sm">
                                             Sau <i class="bi bi-chevron-right"></i>
                                         </a>
                                     </c:if>
@@ -224,6 +231,6 @@
 
                         <script
                             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-                </body>
+                    </body>
 
-                </html>
+                    </html>

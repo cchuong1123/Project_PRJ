@@ -43,13 +43,61 @@ public class PartController extends HttpServlet {
         // List / Search
         String keyword = request.getParameter("keyword");
         PartDAO dao = new PartDAO();
-        List<Part> parts;
+        List<Part> allParts;
         if (keyword != null && !keyword.trim().isEmpty()) {
-            parts = dao.searchParts(keyword.trim());
+            allParts = dao.searchParts(keyword.trim());
             request.setAttribute("keyword", keyword.trim());
         } else {
-            parts = dao.getAllParts();
+            allParts = dao.getAllParts();
         }
+
+        // kiem tra hang hoa
+        int inStockCount = 0;
+        int lowStockCount = 0;
+        int outOfStockCount = 0;
+
+        for (Part p : allParts) {
+            if (p.getStockQty() == 0) {
+                outOfStockCount++;
+            } else if (p.getStockQty() <= p.getMinStock()) {
+                lowStockCount++;
+                inStockCount++;
+            } else {
+                inStockCount++;
+            }
+        }
+
+        // Pagination (10 per page)
+        int pageSize = 10;
+        int totalItems = allParts.size();
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+        if (totalPages < 1)
+            totalPages = 1;
+
+        int currentPage = 1;
+        String pageParam = request.getParameter("page");
+        if (pageParam != null) {
+            try {
+                currentPage = Integer.parseInt(pageParam);
+            } catch (NumberFormatException e) {
+                /* ignore */ }
+        }
+        if (currentPage < 1)
+            currentPage = 1;
+        if (currentPage > totalPages)
+            currentPage = totalPages;
+
+        int fromIndex = (currentPage - 1) * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, totalItems);
+        List<Part> parts = allParts.subList(fromIndex, toIndex);
+
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("totalParts", totalItems);
+
+        request.setAttribute("inStockCount", inStockCount);
+        request.setAttribute("lowStockCount", lowStockCount);
+        request.setAttribute("outOfStockCount", outOfStockCount);
 
         request.setAttribute("parts", parts);
         request.setAttribute("activePage", "parts");

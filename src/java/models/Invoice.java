@@ -9,6 +9,10 @@ public class Invoice {
     private String paymentMethod;
     private Timestamp paidAt;
 
+    // JOIN fields
+    private String customerName;
+    private String licensePlate;
+
     public Invoice() {
     }
 
@@ -50,5 +54,21 @@ public class Invoice {
 
     public void setPaidAt(Timestamp paidAt) {
         this.paidAt = paidAt;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
     }
 }
