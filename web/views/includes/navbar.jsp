@@ -5,7 +5,14 @@
 
                 <!-- Top Navbar -->
                 <nav class="top-navbar">
-                    <a href="Dashboard" class="top-navbar-brand">
+                    <c:choose>
+                        <c:when test="${sessionScope.user.role == 'mechanic'}">
+                            <a href="Orders" class="top-navbar-brand">
+                        </c:when>
+                        <c:otherwise>
+                            <a href="Dashboard" class="top-navbar-brand">
+                        </c:otherwise>
+                    </c:choose>
                         <div class="top-navbar-brand-icon">
                             <i class="bi bi-droplet-fill leaf-blue"></i>
                             <i class="bi bi-droplet-fill leaf-green"></i>
@@ -35,9 +42,11 @@
                 <!-- Secondary Navbar -->
                 <nav class="secondary-navbar">
                     <div class="secondary-navbar-links">
-                        <a href="Dashboard" class="secondary-navbar-link ${activePage == 'dashboard' ? 'active' : ''}">
-                            <i class="bi bi-grid-1x2-fill"></i> Tổng quan
-                        </a>
+                        <c:if test="${sessionScope.user.role != 'mechanic'}">
+                            <a href="Dashboard" class="secondary-navbar-link ${activePage == 'dashboard' ? 'active' : ''}">
+                                <i class="bi bi-grid-1x2-fill"></i> Tổng quan
+                            </a>
+                        </c:if>
                         <c:if test="${sessionScope.user.role != 'mechanic'}">
                             <a href="Parts" class="secondary-navbar-link ${activePage == 'parts' ? 'active' : ''}">
                                 <i class="bi bi-box-seam-fill"></i> Hàng hóa

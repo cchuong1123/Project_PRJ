@@ -18,7 +18,12 @@ public class LoginController extends HttpServlet {
         // If already logged in, redirect to Dashboard
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
-            response.sendRedirect("Dashboard");
+            User user = (User) session.getAttribute("user");
+            if ("mechanic".equals(user.getRole())) {
+                response.sendRedirect("Orders");
+            } else {
+                response.sendRedirect("Dashboard");
+            }
             return;
         }
         RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
@@ -40,7 +45,11 @@ public class LoginController extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
             session.setMaxInactiveInterval(30 * 60); // 30 minutes
-            response.sendRedirect("Dashboard");
+            if ("mechanic".equals(user.getRole())) {
+                response.sendRedirect("Orders");
+            } else {
+                response.sendRedirect("Dashboard");
+            }
         } else {
             // Login failed
             request.setAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng!");

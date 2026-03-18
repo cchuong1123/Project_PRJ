@@ -22,7 +22,7 @@ public class AuthFilter implements Filter {
     private static final Map<String, List<String>> BLOCKED = new HashMap<>();
 
     static {
-        BLOCKED.put("mechanic", Arrays.asList("/Customers", "/Parts", "/Reports", "/Staff"));
+        BLOCKED.put("mechanic", Arrays.asList("/Customers", "/Parts", "/Reports", "/Staff", "/Dashboard"));
         BLOCKED.put("staff", Arrays.asList("/Reports", "/Staff"));
         // admin: no restrictions
     }
@@ -52,7 +52,11 @@ public class AuthFilter implements Filter {
 
         List<String> blockedUrls = BLOCKED.get(role);
         if (blockedUrls != null && blockedUrls.contains(uri)) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/Dashboard");
+            if ("mechanic".equals(role)) {
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/Orders");
+            } else {
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/Dashboard");
+            }
             return;
         }
 
