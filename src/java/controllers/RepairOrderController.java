@@ -20,6 +20,11 @@ public class RepairOrderController extends HttpServlet {
         String action = request.getParameter("action");
 
         if ("delete".equals(action)) {
+            models.User u = (models.User) request.getSession().getAttribute("user");
+            if (u != null && "mechanic".equals(u.getRole())) {
+                response.sendRedirect("Orders");
+                return;
+            }
             int id = Integer.parseInt(request.getParameter("id"));
             new RepairOrderDAO().deleteOrder(id);
             response.sendRedirect("Orders");
@@ -33,7 +38,12 @@ public class RepairOrderController extends HttpServlet {
         }
 
         if ("removePart".equals(action)) {
+            models.User u = (models.User) request.getSession().getAttribute("user");
             int orderId = Integer.parseInt(request.getParameter("orderId"));
+            if (u != null && "mechanic".equals(u.getRole())) {
+                response.sendRedirect("Orders?action=detail&id=" + orderId);
+                return;
+            }
             int partId = Integer.parseInt(request.getParameter("partId"));
             new OrderPartDAO().removePart(orderId, partId);
             response.sendRedirect("Orders?action=detail&id=" + orderId);
@@ -41,6 +51,11 @@ public class RepairOrderController extends HttpServlet {
         }
 
         if ("createOrder".equals(action)) {
+            models.User u = (models.User) request.getSession().getAttribute("user");
+            if (u != null && "mechanic".equals(u.getRole())) {
+                response.sendRedirect("Orders");
+                return;
+            }
             request.setAttribute("allVehicles", new VehicleDAO().getAllVehicles());
             request.setAttribute("mechanics", new UserDAO().getMechanics());
             request.setAttribute("activePage", "orders");
@@ -50,6 +65,11 @@ public class RepairOrderController extends HttpServlet {
 
         if ("addPart".equals(action)) {
             String orderId = request.getParameter("orderId");
+            models.User u = (models.User) request.getSession().getAttribute("user");
+            if (u != null && "mechanic".equals(u.getRole())) {
+                response.sendRedirect("Orders?action=detail&id=" + orderId);
+                return;
+            }
             request.setAttribute("orderID", orderId);
             request.setAttribute("allParts", new PartDAO().getAllParts());
             request.setAttribute("activePage", "orders");
@@ -71,6 +91,15 @@ public class RepairOrderController extends HttpServlet {
             request.setAttribute("filterStatus", status);
         } else {
             allOrders = dao.getAllOrders();
+        }
+
+        // Mechanic logic: Only see their own assigned orders
+        models.User u = (models.User) request.getSession().getAttribute("user");
+        if (u != null && "mechanic".equals(u.getRole())) {
+            int myMechanicId = u.getUserID();
+            allOrders = allOrders.stream()
+                    .filter(o -> o.getMechanicID() == myMechanicId)
+                    .collect(java.util.stream.Collectors.toList());
         }
 
         // Pagination (10 per page)
@@ -115,6 +144,11 @@ public class RepairOrderController extends HttpServlet {
         String action = request.getParameter("action");
 
         if ("create".equals(action)) {
+            models.User u = (models.User) request.getSession().getAttribute("user");
+            if (u != null && "mechanic".equals(u.getRole())) {
+                response.sendRedirect("Orders");
+                return;
+            }
             RepairOrder o = new RepairOrder();
             o.setVehicleID(Integer.parseInt(request.getParameter("vehicleID")));
             o.setMechanicID(Integer.parseInt(request.getParameter("mechanicID")));
@@ -127,11 +161,21 @@ public class RepairOrderController extends HttpServlet {
         } else if ("updateStatus".equals(action)) {
             int id = Integer.parseInt(request.getParameter("orderID"));
             String newStatus = request.getParameter("newStatus");
+            models.User u = (models.User) request.getSession().getAttribute("user");
+            if (u != null && "mechanic".equals(u.getRole()) && "Hoàn thành".equals(newStatus)) {
+                response.sendRedirect("Orders?action=detail&id=" + id);
+                return;
+            }
             new RepairOrderDAO().updateStatus(id, newStatus);
             response.sendRedirect("Orders?action=detail&id=" + id);
 
         } else if ("addPart".equals(action)) {
             int orderId = Integer.parseInt(request.getParameter("orderID"));
+            models.User u = (models.User) request.getSession().getAttribute("user");
+            if (u != null && "mechanic".equals(u.getRole())) {
+                response.sendRedirect("Orders?action=detail&id=" + orderId);
+                return;
+            }
             int partId = Integer.parseInt(request.getParameter("partID"));
             int qty = Integer.parseInt(request.getParameter("quantity"));
             // Get current unit price and warranty months from Parts table

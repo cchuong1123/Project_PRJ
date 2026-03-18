@@ -104,9 +104,11 @@
                                         <input type="text" name="keyword" placeholder="Tìm theo KH, biển số, SĐT..."
                                             value="${keyword}">
                                     </form>
-                                    <a href="Orders?action=createOrder" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-plus-lg"></i> Tạo đơn mới
-                                    </a>
+                                    <c:if test="${sessionScope.user.role != 'mechanic'}">
+                                        <a href="Orders?action=createOrder" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-plus-lg"></i> Tạo đơn mới
+                                        </a>
+                                    </c:if>
                                 </div>
                             </div>
 
@@ -120,10 +122,14 @@
                                             <th>Xe</th>
                                             <th>Thợ phụ trách</th>
                                             <th>Trạng thái</th>
-                                            <th>Tiền phụ tùng</th>
-                                            <th>Phí Dịch Vụ</th>
+                                            <c:if test="${sessionScope.user.role != 'mechanic'}">
+                                                <th>Tiền phụ tùng</th>
+                                                <th>Phí Dịch Vụ</th>
+                                            </c:if>
                                             <th>Ngày tạo</th>
-                                            <th>Khách phải trả</th>
+                                            <c:if test="${sessionScope.user.role != 'mechanic'}">
+                                                <th>Khách phải trả</th>
+                                            </c:if>
                                             <th>Thao tác</th>
                                         </tr>
                                     </thead>
@@ -147,43 +153,56 @@
                                                 <td>
                                                     <mt:statusBadge status="${o.status}" />
                                                 </td>
-                                                <td class="font-semibold">
-                                                    <fmt:formatNumber value="${o.partsTotal}" type="number"
-                                                        groupingUsed="true" />đ
-                                                </td>
-                                                <td class="font-semibold">
-                                                    <fmt:formatNumber value="${o.laborCost}" type="number"
-                                                        groupingUsed="true" />đ
-                                                </td>
+                                                <c:if test="${sessionScope.user.role != 'mechanic'}">
+                                                    <td class="font-semibold">
+                                                        <fmt:formatNumber value="${o.partsTotal}" type="number"
+                                                            groupingUsed="true" />đ
+                                                    </td>
+                                                    <td class="font-semibold">
+                                                        <fmt:formatNumber value="${o.laborCost}" type="number"
+                                                            groupingUsed="true" />đ
+                                                    </td>
+                                                </c:if>
                                                 <td class="text-xs text-muted">
                                                     <fmt:formatDate value="${o.createdAt}" pattern="dd/MM/yyyy HH:mm" />
                                                 </td>
-                                                <td class="font-bold text-primary">
-                                                    <fmt:formatNumber value="${o.partsTotal + o.laborCost}"
-                                                        type="number" groupingUsed="true" />đ
-                                                </td>
+                                                <c:if test="${sessionScope.user.role != 'mechanic'}">
+                                                    <td class="font-bold text-primary">
+                                                        <fmt:formatNumber value="${o.partsTotal + o.laborCost}"
+                                                            type="number" groupingUsed="true" />đ
+                                                    </td>
+                                                </c:if>
                                                 <td>
                                                     <div class="table-actions">
                                                         <a href="Orders?action=detail&id=${o.orderID}"
                                                             class="btn btn-primary btn-icon-sm" title="Chi tiết">
                                                             <i class="bi bi-eye"></i>
                                                         </a>
-                                                        <a href="Orders?action=delete&id=${o.orderID}"
-                                                            class="btn btn-danger btn-icon-sm" title="Xóa"
-                                                            onclick="return confirm('Xóa phiếu sửa chữa #${o.orderID}? Tất cả phụ tùng và hóa đơn liên quan sẽ bị xóa.')">
-                                                            <i class="bi bi-trash3"></i>
-                                                        </a>
+                                                        <c:if test="${sessionScope.user.role != 'mechanic'}">
+                                                            <a href="Orders?action=delete&id=${o.orderID}"
+                                                                class="btn btn-danger btn-icon-sm" title="Xóa"
+                                                                onclick="return confirm('Xóa phiếu sửa chữa #${o.orderID}? Tất cả phụ tùng và hóa đơn liên quan sẽ bị xóa.')">
+                                                                <i class="bi bi-trash3"></i>
+                                                            </a>
+                                                        </c:if>
                                                     </div>
                                                 </td>
                                             </tr>
                                         </c:forEach>
                                         <c:if test="${empty orders}">
                                             <tr>
-                                                <td colspan="10" class="text-center p-xl">
+                                                <td colspan="${sessionScope.user.role == 'mechanic' ? 7 : 10}" class="text-center p-xl">
                                                     <div class="empty-state">
                                                         <i class="bi bi-clipboard-x d-block"></i>
                                                         <h3>Chưa có phiếu sửa chữa nào</h3>
-                                                        <p>Nhấn "Tạo đơn" để bắt đầu.</p>
+                                                        <c:choose>
+                                                            <c:when test="${sessionScope.user.role == 'mechanic'}">
+                                                                <p>Hiện chưa có phiếu sửa chữa nào được phân công cho bạn.</p>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <p>Nhấn "Tạo đơn" để bắt đầu.</p>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </div>
                                                 </td>
                                             </tr>

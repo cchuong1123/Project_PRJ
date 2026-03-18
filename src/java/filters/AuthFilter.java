@@ -1,4 +1,4 @@
-package controllers;
+package filters;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -10,8 +10,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import models.User;
 
 public class AuthFilter implements Filter {
+
+    // role -> list of BLOCKED URLs
+    private static final Map<String, List<String>> BLOCKED = new HashMap<>();
+
+    static {
+        BLOCKED.put("mechanic", Arrays.asList("/Customers", "/Parts", "/Reports", "/Staff"));
+        BLOCKED.put("staff", Arrays.asList("/Reports", "/Staff"));
+        // admin: no restrictions
+    }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -26,11 +40,23 @@ public class AuthFilter implements Filter {
         HttpSession session = httpRequest.getSession(false);
         boolean isLoggedIn = (session != null && session.getAttribute("user") != null);
 
-        if (isLoggedIn) {
-            chain.doFilter(request, response);
-        } else {
+        if (!isLoggedIn) {
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/Login");
+            return;
         }
+
+        // Role-based access check
+        User user = (User) session.getAttribute("user");
+        String role = user.getRole();
+        String uri = httpRequest.getServletPath(); // e.g. "/Reports"
+
+        List<String> blockedUrls = BLOCKED.get(role);
+        if (blockedUrls != null && blockedUrls.contains(uri)) {
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/Dashboard");
+            return;
+        }
+
+        chain.doFilter(request, response);
     }
 
     @Override

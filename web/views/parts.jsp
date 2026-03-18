@@ -96,7 +96,9 @@
                                             <th>Tên phụ tùng</th>
                                             <th>Mã SKU</th>
                                             <th>Tồn kho</th>
-                                            <th>Giá nhập</th>
+                                            <c:if test="${sessionScope.user.role == 'admin'}">
+                                                <th>Giá nhập</th>
+                                            </c:if>
                                             <th>Giá bán</th>
                                             <th>Ngưỡng tối thiểu</th>
                                             <th>BH (tháng)</th>
@@ -113,10 +115,12 @@
                                                 <td>
                                                     ${p.stockQty}
                                                 </td>
-                                                <td class="price">
-                                                    <fmt:formatNumber value="${p.importPrice}" type="number"
-                                                        groupingUsed="true" />đ
-                                                </td>
+                                                <c:if test="${sessionScope.user.role == 'admin'}">
+                                                    <td class="price">
+                                                        <fmt:formatNumber value="${p.importPrice}" type="number"
+                                                            groupingUsed="true" />đ
+                                                    </td>
+                                                </c:if>
                                                 <td class="price">
                                                     <fmt:formatNumber value="${p.unitPrice}" type="number"
                                                         groupingUsed="true" />đ

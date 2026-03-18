@@ -91,7 +91,7 @@
                                     </div>
 
                                     <div class="report-card">
-                                        <div class="report-card-icon green">
+                                        <div class="report-card-icon orange">
                                             <i class="bi bi-receipt-cutoff"></i>
                                         </div>
                                         <div class="report-card-info">
@@ -101,7 +101,7 @@
                                     </div>
 
                                     <div class="report-card">
-                                        <div class="report-card-icon orange">
+                                        <div class="report-card-icon green">
                                             <i class="bi bi-piggy-bank"></i>
                                         </div>
                                         <div class="report-card-info">

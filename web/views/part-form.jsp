@@ -57,11 +57,13 @@
                         </div>
                     </div>
                     <div class="form-row flex gap-md mb-md">
-                        <div class="form-group flex-1">
-                            <label class="form-label">Giá nhập (VNĐ) *</label>
-                            <input type="number" class="form-input-plain" name="importPrice"
-                                   step="1" min="0" value="${part.importPrice}" required>
-                        </div>
+                        <c:if test="${sessionScope.user.role == 'admin'}">
+                            <div class="form-group flex-1">
+                                <label class="form-label">Giá nhập (VNĐ) *</label>
+                                <input type="number" class="form-input-plain" name="importPrice"
+                                       step="1" min="0" value="${part.importPrice}" required>
+                            </div>
+                        </c:if>
                         <div class="form-group flex-1">
                             <label class="form-label">Giá bán (VNĐ) *</label>
                             <input type="number" class="form-input-plain" name="unitPrice"
