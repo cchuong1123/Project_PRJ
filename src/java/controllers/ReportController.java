@@ -87,11 +87,14 @@ public class ReportController extends HttpServlet {
         double revenue = invoiceDAO.getRevenueByDateRange(fromDate, toDate);
         int totalInvoices = invoiceDAO.getTotalInvoicesByDateRange(fromDate, toDate);
         List<Invoice> invoices = invoiceDAO.getInvoicesByDateRange(fromDate, toDate);
-        double avgRevenue = totalInvoices > 0 ? revenue / totalInvoices : 0;
+        double totalProfit = 0;
+        for (Invoice inv : invoices) {
+            totalProfit += inv.getProfit();
+        }
 
         request.setAttribute("revenue", revenue);
         request.setAttribute("totalInvoices", totalInvoices);
-        request.setAttribute("avgRevenue", avgRevenue);
+        request.setAttribute("totalProfit", totalProfit);
         request.setAttribute("invoices", invoices);
         request.setAttribute("filterType", filterType);
         request.setAttribute("filterLabel", filterLabel);

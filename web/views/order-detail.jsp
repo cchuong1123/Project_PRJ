@@ -342,7 +342,7 @@
                                                                     style="font-size:var(--font-size-xs); font-weight:600">Công
                                                                     thợ (VNĐ)</label>
                                                                 <input type="number" class="form-input-plain"
-                                                                    name="laborCost" id="laborCostInput" step="1000"
+                                                                    name="laborCost" id="laborCostInput" step="1"
                                                                     min="0"
                                                                     value="${order.laborCost > 0 ? order.laborCost : 0}"
                                                                     style="font-size:var(--font-size-sm); padding:8px 12px"

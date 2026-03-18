@@ -10,8 +10,8 @@ public class Invoice {
     private Timestamp paidAt;
 
     // JOIN fields
-    private String customerName;
-    private String licensePlate;
+    private double cost;
+    private double profit;
 
     public Invoice() {
     }
@@ -56,19 +56,19 @@ public class Invoice {
         this.paidAt = paidAt;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public double getCost() {
+        return cost;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 
-    public String getLicensePlate() {
-        return licensePlate;
+    public double getProfit() {
+        return profit;
     }
 
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
+    public void setProfit(double profit) {
+        this.profit = profit;
     }
 }

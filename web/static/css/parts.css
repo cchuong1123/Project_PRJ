@@ -67,7 +67,7 @@
 
 /* --- Low Stock Warning --- */
 .low-stock {
-    color: var(--danger) !important;
+    color: var(--warning) !important;
     font-weight: 700;
 }
 
@@ -76,8 +76,8 @@
     align-items: center;
     gap: 4px;
     padding: 2px 8px;
-    background: var(--danger-light);
-    color: var(--danger);
+    background: var(--warning-light);
+    color: var(--warning);
     border-radius: 12px;
     font-size: var(--font-size-xs);
     font-weight: 600;
@@ -160,6 +160,11 @@
 .summary-card-icon.green {
     background: var(--success-light);
     color: var(--success);
+}
+
+.summary-card-icon.orange {
+    background: var(--warning-light);
+    color: var(--warning);
 }
 
 .summary-card-icon.red {

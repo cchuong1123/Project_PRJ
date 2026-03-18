@@ -60,7 +60,6 @@
     background: rgba(0, 0, 0, 0.03);
     border: 1.5px solid transparent;
     text-decoration: none;
-    transition: all var(--transition-base);
     cursor: pointer;
 }
 
@@ -140,11 +139,9 @@
     align-items: center;
     gap: var(--spacing-md);
     box-shadow: var(--shadow-sm);
-    transition: all var(--transition-base);
 }
 
 .report-card:hover {
-    transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
 
@@ -255,7 +252,6 @@
     font-weight: 600;
     color: var(--primary) !important;
     text-decoration: none !important;
-    transition: all var(--transition-base);
 }
 
 .order-link:hover {

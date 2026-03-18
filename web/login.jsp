@@ -48,7 +48,7 @@
 
                     <!-- Error message -->
                     <c:if test="${not empty error}">
-                        <div class="alert alert-error anim-shake">
+                        <div class="alert alert-error">
                             <i class="bi bi-exclamation-triangle-fill"></i>
                             <span>${error}</span>
                         </div>
@@ -78,15 +78,8 @@
                                         </div>
                                     </div>
 
-                                    <!-- Options -->
-                                    <div class="form-options">
-                                        <label class="form-check">
-                                            <input type="checkbox" name="remember" value="true">
-                                            <span class="checkmark"></span>
-                                            <span>Duy trì đăng nhập</span>
-                                        </label>
-                                        <a href="#" class="forgot-link">Quên mật khẩu?</a>
-                                    </div>
+                                    <!-- Options spacing -->
+                                    <div class="form-options"></div>
 
                                     <!-- Submit -->
                                     <button type="submit" class="btn btn-primary btn-lg btn-block">

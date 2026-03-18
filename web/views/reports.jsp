@@ -33,7 +33,7 @@
                             <main class="dashboard-main">
 
                                 <!-- Page Header -->
-                                <div class="report-header anim-slide-up">
+                                <div class="report-header">
                                     <div class="report-header-text">
                                         <h1><i class="bi bi-bar-chart-line-fill"></i> Báo cáo doanh thu</h1>
                                         <p class="report-subtitle">${filterLabel}</p>
@@ -41,7 +41,7 @@
                                 </div>
 
                                 <!-- Filter Section -->
-                                <div class="report-filters anim-slide-up">
+                                <div class="report-filters">
                                     <div class="filter-quick-btns">
                                         <a href="Reports?filterType=today"
                                            class="filter-btn ${filterType == 'today' ? 'active' : ''}">
@@ -77,7 +77,7 @@
                                 </div>
 
                                 <!-- Revenue Summary Cards -->
-                                <div class="report-summary anim-slide-up">
+                                <div class="report-summary">
                                     <div class="report-card revenue-card">
                                         <div class="report-card-icon blue">
                                             <i class="bi bi-cash-stack"></i>
@@ -102,19 +102,19 @@
 
                                     <div class="report-card">
                                         <div class="report-card-icon orange">
-                                            <i class="bi bi-graph-up-arrow"></i>
+                                            <i class="bi bi-piggy-bank"></i>
                                         </div>
                                         <div class="report-card-info">
                                             <span class="report-card-value">
-                                                <fmt:formatNumber value="${avgRevenue}" type="number" groupingUsed="true" maxFractionDigits="0" />đ
+                                                <fmt:formatNumber value="${totalProfit}" type="number" groupingUsed="true" maxFractionDigits="0" />đ
                                             </span>
-                                            <span class="report-card-label">Trung bình / hóa đơn</span>
+                                            <span class="report-card-label">Tổng lợi nhuận</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Invoice Detail Table -->
-                                <div class="report-table-section anim-slide-up">
+                                <div class="report-table-section">
                                     <div class="report-table-header">
                                         <h2><i class="bi bi-table"></i> Chi tiết hóa đơn</h2>
                                         <span class="report-table-count">${totalInvoices} hóa đơn</span>
@@ -123,28 +123,23 @@
                                         <table class="table-custom">
                                             <thead>
                                                 <tr>
-                                                    <th>Mã HĐ</th>
                                                     <th>Mã đơn</th>
-                                                    <th>Khách hàng</th>
-                                                    <th>Biển số</th>
-                                                    <th>Tổng tiền</th>
-                                                    <th>Thanh toán</th>
                                                     <th>Ngày thanh toán</th>
+                                                    <th>Phương thức</th>
+                                                    <th>Tổng tiền(Thu)</th>
+                                                    <th>Tiền vốn</th>
+                                                    <th>Lợi nhuận</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <c:forEach var="inv" items="${invoices}">
                                                     <tr>
-                                                        <td><span class="invoice-id">#${inv.invoiceID}</span></td>
                                                         <td>
                                                             <a href="Orders?action=detail&id=${inv.orderID}"
                                                                class="order-link">#${inv.orderID}</a>
                                                         </td>
-                                                        <td style="font-weight:600">${inv.customerName}</td>
-                                                        <td><span class="sku-code">${inv.licensePlate}</span></td>
-                                                        <td style="font-weight:700; color:var(--primary)">
-                                                            <fmt:formatNumber value="${inv.totalAmount}" type="number"
-                                                                groupingUsed="true" />đ
+                                                        <td style="font-size:var(--font-size-xs); color:var(--text-muted)">
+                                                            <fmt:formatDate value="${inv.paidAt}" pattern="dd/MM/yyyy HH:mm" />
                                                         </td>
                                                         <td>
                                                             <c:choose>
@@ -165,14 +160,21 @@
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </td>
-                                                        <td style="font-size:var(--font-size-xs); color:var(--text-muted)">
-                                                            <fmt:formatDate value="${inv.paidAt}" pattern="dd/MM/yyyy HH:mm" />
+                                                        <td style="font-weight:700; color:var(--primary)">
+                                                            <fmt:formatNumber value="${inv.totalAmount}" type="number"
+                                                                groupingUsed="true" />đ
+                                                        </td>
+                                                        <td style="font-weight:600; color:var(--text-muted)">
+                                                            <fmt:formatNumber value="${inv.cost}" type="number" groupingUsed="true" />đ
+                                                        </td>
+                                                        <td style="font-weight:700; color:var(--success)">
+                                                            <fmt:formatNumber value="${inv.profit}" type="number" groupingUsed="true" />đ
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
                                                 <c:if test="${empty invoices}">
                                                     <tr>
-                                                        <td colspan="7" class="text-center" style="padding:40px">
+                                                        <td colspan="6" class="text-center" style="padding:40px">
                                                             <div class="empty-state">
                                                                 <i class="bi bi-clipboard-x" style="display:block"></i>
                                                                 <h3>Không có hóa đơn nào</h3>

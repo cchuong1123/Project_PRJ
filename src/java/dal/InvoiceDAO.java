@@ -58,11 +58,11 @@ public class InvoiceDAO extends DBContext {
      */
     public List<Invoice> getInvoicesByDateRange(String fromDate, String toDate) {
         List<Invoice> list = new ArrayList<>();
-        String sql = "SELECT i.*, c.FullName AS CustomerName, v.LicensePlate "
+        String sql = "SELECT i.*, "
+                   + "ISNULL((SELECT SUM(op.Quantity * p.ImportPrice) "
+                   + "        FROM OrderParts op JOIN Parts p ON op.PartID = p.PartID "
+                   + "        WHERE op.OrderID = i.OrderID), 0) AS TotalCost "
                    + "FROM Invoices i "
-                   + "JOIN RepairOrders ro ON i.OrderID = ro.OrderID "
-                   + "JOIN Vehicles v ON ro.VehicleID = v.VehicleID "
-                   + "JOIN Customers c ON v.CustomerID = c.CustomerID "
                    + "WHERE CAST(i.PaidAt AS DATE) >= ? AND CAST(i.PaidAt AS DATE) <= ? "
                    + "ORDER BY i.PaidAt DESC";
         try {
@@ -77,8 +77,8 @@ public class InvoiceDAO extends DBContext {
                 inv.setTotalAmount(rs.getDouble("TotalAmount"));
                 inv.setPaymentMethod(rs.getString("PaymentMethod"));
                 inv.setPaidAt(rs.getTimestamp("PaidAt"));
-                inv.setCustomerName(rs.getString("CustomerName"));
-                inv.setLicensePlate(rs.getString("LicensePlate"));
+                inv.setCost(rs.getDouble("TotalCost"));
+                inv.setProfit(inv.getTotalAmount() - inv.getCost());
                 list.add(inv);
             }
         } catch (SQLException ex) {

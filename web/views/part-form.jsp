@@ -60,12 +60,12 @@
                         <div class="form-group" style="flex:1">
                             <label class="form-label">Giá nhập (VNĐ) *</label>
                             <input type="number" class="form-input-plain" name="importPrice"
-                                   step="1000" min="0" value="${part.importPrice}" required>
+                                   step="1" min="0" value="${part.importPrice}" required>
                         </div>
                         <div class="form-group" style="flex:1">
                             <label class="form-label">Giá bán (VNĐ) *</label>
                             <input type="number" class="form-input-plain" name="unitPrice"
-                                   step="1000" min="0" value="${part.unitPrice}" required>
+                                   step="1" min="0" value="${part.unitPrice}" required>
                         </div>
                     </div>
                     <div class="form-row" style="display:flex; gap:var(--spacing-md); margin-bottom:var(--spacing-lg)">
