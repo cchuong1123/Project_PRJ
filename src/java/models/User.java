@@ -1,5 +1,7 @@
 package models;
 
+import java.sql.Date;
+
 public class User {
     private int userID;
     private String username;
@@ -7,6 +9,7 @@ public class User {
     private String fullName;
     private String role;
     private boolean isActive;
+    private Date hireDate;
 
     public User() {
     }
@@ -66,5 +69,13 @@ public class User {
 
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public Date getHireDate() {
+        return hireDate;
+    }
+
+    public void setHireDate(Date hireDate) {
+        this.hireDate = hireDate;
     }
 }

@@ -30,23 +30,21 @@
 
                     <!-- Error Alert -->
                     <c:if test="${param.error == 'phone_exists'}">
-                        <div
-                            style="background:#fff3f3; border:1px solid #e74c3c; color:#c0392b; padding:12px 16px; border-radius:8px; margin-bottom:16px; display:flex; align-items:center; gap:8px; font-size:var(--font-size-sm)">
+                        <div class="alert alert-danger d-flex align-items-center mb-3 text-sm py-2 px-3">
                             <i class="bi bi-exclamation-triangle-fill"></i>
                             <span>Số điện thoại này đã tồn tại trong hệ thống. Vui lòng nhập số khác.</span>
                         </div>
                     </c:if>
                     <c:if test="${param.error == 'plate_exists'}">
-                        <div
-                            style="background:#fff3f3; border:1px solid #e74c3c; color:#c0392b; padding:12px 16px; border-radius:8px; margin-bottom:16px; display:flex; align-items:center; gap:8px; font-size:var(--font-size-sm)">
+                        <div class="alert alert-danger d-flex align-items-center mb-3 text-sm py-2 px-3">
                             <i class="bi bi-exclamation-triangle-fill"></i>
                             <span>Biển số xe này đã tồn tại trong hệ thống. Vui lòng nhập biển số khác.</span>
                         </div>
                     </c:if>
 
                     <!-- Summary Cards -->
-                    <div class="customers-summary" style="display:inline-flex; min-width:250px;">
-                        <div class="summary-card" style="width:100%">
+                    <div class="customers-summary d-inline-flex min-w-250">
+                        <div class="summary-card w-100">
                             <div class="summary-card-icon blue">
                                 <i class="bi bi-people-fill"></i>
                             </div>
@@ -76,7 +74,7 @@
                         <table class="table-custom">
                             <thead>
                                 <tr>
-                                    <th style="width:40px"></th>
+                                    <th class="w-40px"></th>
                                     <th>#</th>
                                     <th>Họ tên</th>
                                     <th>Số điện thoại</th>
@@ -97,7 +95,7 @@
                                             </a>
                                         </td>
                                         <td>${loop.index + 1}</td>
-                                        <td style="font-weight:600; color:var(--text-heading)">${c.fullName}</td>
+                                        <td class="font-semibold text-heading">${c.fullName}</td>
                                         <td>
                                             <div class="contact-phone">
                                                 <i class="bi bi-telephone-fill"></i> ${c.phone}
@@ -169,8 +167,7 @@
                                             </c:when>
                                             <c:otherwise>
                                                 <tr class="vehicle-row">
-                                                    <td colspan="7"
-                                                        style="padding-left:48px; color:var(--text-muted); font-style:italic">
+                                                    <td colspan="7" class="ps-48 text-muted italic">
                                                         Chưa có xe nào được đăng ký.
                                                     </td>
                                                 </tr>
@@ -180,9 +177,9 @@
                                 </c:forEach>
                                 <c:if test="${empty customers}">
                                     <tr>
-                                        <td colspan="7" class="text-center" style="padding:40px">
+                                        <td colspan="7" class="text-center p-xl">
                                             <div class="empty-state">
-                                                <i class="bi bi-person-x" style="display:block"></i>
+                                                <i class="bi bi-person-x d-block"></i>
                                                 <h3>Không tìm thấy khách hàng</h3>
                                                 <p>Thử tìm kiếm với từ khóa khác hoặc thêm khách hàng mới.</p>
                                             </div>
@@ -195,8 +192,7 @@
 
                     <!-- Pagination -->
                     <c:if test="${totalPages > 1}">
-                        <div
-                            style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:var(--spacing-lg); padding:var(--spacing-md) 0">
+                        <div class="flex flex-center items-center gap-sm mt-lg py-md">
                             <c:set var="pageParams" value="" />
                             <c:if test="${not empty keyword}">
                                 <c:set var="pageParams" value="&keyword=${keyword}" />
@@ -210,8 +206,7 @@
 
                             <c:forEach var="i" begin="1" end="${totalPages}">
                                 <a href="Customers?page=${i}${pageParams}"
-                                    class="btn btn-sm ${i == currentPage ? 'btn-primary' : 'btn-outline'}"
-                                    style="min-width:36px; text-align:center">${i}</a>
+                                    class="btn btn-sm ${i == currentPage ? 'btn-primary' : 'btn-outline'} min-w-36 text-center">${i}</a>
                             </c:forEach>
 
                             <c:if test="${currentPage < totalPages}">

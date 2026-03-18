@@ -27,43 +27,43 @@
             <i class="bi bi-arrow-left"></i> Quay lại danh sách
         </a>
 
-        <div class="detail-card" style="max-width:600px">
+        <div class="detail-card max-w-600">
             <h3>
                 <i class="bi bi-bicycle"></i>
                 ${not empty vehicle ? 'Sửa xe' : 'Thêm xe mới'}
             </h3>
 
-            <form action="Customers" method="POST" style="margin-top:var(--spacing-lg)">
+            <form action="Customers" method="POST" class="mt-lg">
                 <input type="hidden" name="action" value="${not empty vehicle ? 'editVehicle' : 'addVehicle'}">
                 <input type="hidden" name="customerID" value="${customerID}">
                 <c:if test="${not empty vehicle}">
                     <input type="hidden" name="vehicleID" value="${vehicle.vehicleID}">
                 </c:if>
 
-                <div class="form-group" style="margin-bottom:var(--spacing-md)">
+                <div class="form-group mb-md">
                     <label class="form-label">Biển số *</label>
                     <input type="text" class="form-input-plain" name="licensePlate"
                         value="${vehicle.licensePlate}" required>
                 </div>
-                <div class="form-row" style="display:flex; gap:var(--spacing-md); margin-bottom:var(--spacing-md)">
-                    <div class="form-group" style="flex:1">
+                <div class="form-row flex gap-md mb-md">
+                    <div class="form-group flex-1">
                         <label class="form-label">Hãng xe</label>
                         <input type="text" class="form-input-plain" name="brand"
                             value="${vehicle.brand}">
                     </div>
-                    <div class="form-group" style="flex:1">
+                    <div class="form-group flex-1">
                         <label class="form-label">Mẫu xe</label>
                         <input type="text" class="form-input-plain" name="model"
                             value="${vehicle.model}">
                     </div>
                 </div>
-                <div class="form-group" style="margin-bottom:var(--spacing-lg)">
+                <div class="form-group mb-lg">
                     <label class="form-label">Năm sản xuất</label>
                     <input type="number" class="form-input-plain" name="manufactureYear"
                         min="1990" max="2030" value="${not empty vehicle ? vehicle.manufactureYear : 2024}">
                 </div>
 
-                <div style="display:flex; gap:var(--spacing-sm); justify-content:flex-end">
+                <div class="flex gap-sm justify-end">
                     <a href="Customers?expandId=${customerID}" class="btn btn-secondary btn-sm">Hủy</a>
                     <button type="submit" class="btn btn-primary btn-sm">
                         <i class="bi bi-${not empty vehicle ? 'check-lg' : 'plus-lg'}"></i>

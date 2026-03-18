@@ -28,16 +28,16 @@
             <i class="bi bi-arrow-left"></i> Quay lại đơn #${orderID}
         </a>
 
-        <div class="detail-card" style="max-width:600px">
+        <div class="detail-card max-w-600">
             <h3>
                 <i class="bi bi-box-seam"></i> Thêm phụ tùng vào đơn #${orderID}
             </h3>
 
-            <form action="Orders" method="POST" id="addPartForm" style="margin-top:var(--spacing-lg)">
+            <form action="Orders" method="POST" id="addPartForm" class="mt-lg">
                 <input type="hidden" name="action" value="addPart">
                 <input type="hidden" name="orderID" value="${orderID}">
 
-                <div class="form-group" style="margin-bottom:var(--spacing-md)">
+                <div class="form-group mb-md">
                     <label class="form-label">Chọn phụ tùng *</label>
                     <select class="form-input-plain" name="partID" id="partSelect" required
                         onchange="onPartChange()">
@@ -53,15 +53,15 @@
                         </c:forEach>
                     </select>
                 </div>
-                <div class="form-group" style="margin-bottom:var(--spacing-lg)">
+                <div class="form-group mb-lg">
                     <label class="form-label">Số lượng *</label>
                     <input type="number" class="form-input-plain" name="quantity" id="qtyInput"
                         min="1" value="1" required>
                     <small id="stockHint"
-                        style="color:var(--text-muted); font-size:var(--font-size-xs)"></small>
+                        class="text-muted text-xs"></small>
                 </div>
 
-                <div style="display:flex; gap:var(--spacing-sm); justify-content:flex-end">
+                <div class="flex gap-sm justify-end">
                     <a href="Orders?action=detail&id=${orderID}" class="btn btn-secondary btn-sm">Hủy</a>
                     <button type="submit" class="btn btn-primary btn-sm">
                         <i class="bi bi-plus-lg"></i> Thêm

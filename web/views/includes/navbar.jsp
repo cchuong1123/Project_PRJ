@@ -46,6 +46,9 @@
         <a href="Reports" class="secondary-navbar-link ${activePage == 'reports' ? 'active' : ''}">
             <i class="bi bi-bar-chart-line-fill"></i> Báo cáo
         </a>
+        <a href="Staff" class="secondary-navbar-link ${activePage == 'staff' ? 'active' : ''}">
+            <i class="bi bi-person-badge-fill"></i> Nhân sự
+        </a>
     </div>
     <c:choose>
         <c:when test="${activePage == 'order-detail'}">

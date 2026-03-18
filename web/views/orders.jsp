@@ -61,19 +61,19 @@
                                     </c:if>
                                 </c:forEach>
                                 <div class="summary-mini">
-                                    <div class="summary-mini-value" style="color:var(--info)">${cTiepNhan}</div>
+                                    <div class="summary-mini-value text-info">${cTiepNhan}</div>
                                     <div class="summary-mini-label">Tiếp nhận</div>
                                 </div>
                                 <div class="summary-mini">
-                                    <div class="summary-mini-value" style="color:var(--warning)">${cDangSua}</div>
+                                    <div class="summary-mini-value text-warning">${cDangSua}</div>
                                     <div class="summary-mini-label">Đang sửa</div>
                                 </div>
                                 <div class="summary-mini">
-                                    <div class="summary-mini-value" style="color:var(--success)">${cHoanThanh}</div>
+                                    <div class="summary-mini-value text-success">${cHoanThanh}</div>
                                     <div class="summary-mini-label">Hoàn thành</div>
                                 </div>
                                 <div class="summary-mini">
-                                    <div class="summary-mini-value" style="color:var(--text-muted)">${cDaGiao}</div>
+                                    <div class="summary-mini-value text-muted">${cDaGiao}</div>
                                     <div class="summary-mini-label">Đã giao</div>
                                 </div>
                             </div>
@@ -130,37 +130,35 @@
                                     <tbody>
                                         <c:forEach var="o" items="${orders}">
                                             <tr>
-                                                <td><span
-                                                        style="font-weight:700; color:var(--primary)">#${o.orderID}</span>
+                                                <td><span class="font-bold text-primary">#${o.orderID}</span>
                                                 </td>
                                                 <td>
-                                                    <div style="font-weight:600; color:var(--text-heading)">
+                                                    <div class="font-semibold text-heading">
                                                         ${o.customerName}</div>
-                                                    <div style="font-size:var(--font-size-xs); color:var(--text-muted)">
+                                                    <div class="text-xs text-muted">
                                                         ${o.customerPhone}</div>
                                                 </td>
                                                 <td>
                                                     <span class="sku-code">${o.vehiclePlate}</span>
-                                                    <div
-                                                        style="font-size:var(--font-size-xs); color:var(--text-muted); margin-top:2px">
+                                                    <div class="text-xs text-muted mt-xs">
                                                         ${o.vehicleInfo}</div>
                                                 </td>
                                                 <td>${o.mechanicName}</td>
                                                 <td>
                                                     <mt:statusBadge status="${o.status}" />
                                                 </td>
-                                                <td style="font-weight:600">
+                                                <td class="font-semibold">
                                                     <fmt:formatNumber value="${o.partsTotal}" type="number"
                                                         groupingUsed="true" />đ
                                                 </td>
-                                                <td style="font-weight:600">
+                                                <td class="font-semibold">
                                                     <fmt:formatNumber value="${o.laborCost}" type="number"
                                                         groupingUsed="true" />đ
                                                 </td>
-                                                <td style="font-size:var(--font-size-xs); color:var(--text-muted)">
+                                                <td class="text-xs text-muted">
                                                     <fmt:formatDate value="${o.createdAt}" pattern="dd/MM/yyyy HH:mm" />
                                                 </td>
-                                                <td style="font-weight:700; color:var(--primary)">
+                                                <td class="font-bold text-primary">
                                                     <fmt:formatNumber value="${o.partsTotal + o.laborCost}"
                                                         type="number" groupingUsed="true" />đ
                                                 </td>
@@ -181,9 +179,9 @@
                                         </c:forEach>
                                         <c:if test="${empty orders}">
                                             <tr>
-                                                <td colspan="10" class="text-center" style="padding:40px">
+                                                <td colspan="10" class="text-center p-xl">
                                                     <div class="empty-state">
-                                                        <i class="bi bi-clipboard-x" style="display:block"></i>
+                                                        <i class="bi bi-clipboard-x d-block"></i>
                                                         <h3>Chưa có phiếu sửa chữa nào</h3>
                                                         <p>Nhấn "Tạo đơn" để bắt đầu.</p>
                                                     </div>
@@ -196,8 +194,7 @@
 
                             <!-- Pagination -->
                             <c:if test="${totalPages > 1}">
-                                <div
-                                    style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:var(--spacing-lg); padding:var(--spacing-md) 0">
+                                <div class="flex flex-center items-center gap-sm mt-lg py-md">
                                     <c:set var="pageParams" value="" />
                                     <c:if test="${not empty filterStatus}">
                                         <c:set var="pageParams" value="&status=${filterStatus}" />
@@ -215,8 +212,7 @@
 
                                     <c:forEach var="i" begin="1" end="${totalPages}">
                                         <a href="Orders?page=${i}${pageParams}"
-                                            class="btn btn-sm ${i == currentPage ? 'btn-primary' : 'btn-outline'}"
-                                            style="min-width:36px; text-align:center">${i}</a>
+                                            class="btn btn-sm ${i == currentPage ? 'btn-primary' : 'btn-outline'} min-w-36 text-center">${i}</a>
                                     </c:forEach>
 
                                     <c:if test="${currentPage < totalPages}">

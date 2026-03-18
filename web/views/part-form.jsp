@@ -27,54 +27,54 @@
                 <i class="bi bi-arrow-left"></i> Quay lại danh sách
             </a>
 
-            <div class="detail-card" style="max-width:650px">
+            <div class="detail-card max-w-650">
                 <h3>
                     <i class="bi bi-box-seam${not empty part ? '' : '-fill'}"></i>
                     ${not empty part ? 'Sửa phụ tùng' : 'Thêm phụ tùng mới'}
                 </h3>
 
-                <form action="Parts" method="POST" style="margin-top:var(--spacing-lg)">
+                <form action="Parts" method="POST" class="mt-lg">
                     <input type="hidden" name="action" value="${not empty part ? 'editPart' : 'addPart'}">
                     <c:if test="${not empty part}">
                         <input type="hidden" name="partID" value="${part.partID}">
                     </c:if>
 
-                    <div class="form-group" style="margin-bottom:var(--spacing-md)">
+                    <div class="form-group mb-md">
                         <label class="form-label">Tên phụ tùng *</label>
                         <input type="text" class="form-input-plain" name="partName"
                                value="${part.partName}" required>
                     </div>
-                    <div class="form-row" style="display:flex; gap:var(--spacing-md); margin-bottom:var(--spacing-md)">
-                        <div class="form-group" style="flex:1">
+                    <div class="form-row flex gap-md mb-md">
+                        <div class="form-group flex-1">
                             <label class="form-label">Mã SKU *</label>
                             <input type="text" class="form-input-plain" name="sku"
                                    value="${part.sku}" required>
                         </div>
-                        <div class="form-group" style="flex:1">
+                        <div class="form-group flex-1">
                             <label class="form-label">Tồn kho *</label>
                             <input type="number" class="form-input-plain" name="stockQty"
                                    min="0" value="${part.stockQty}" required>
                         </div>
                     </div>
-                    <div class="form-row" style="display:flex; gap:var(--spacing-md); margin-bottom:var(--spacing-md)">
-                        <div class="form-group" style="flex:1">
+                    <div class="form-row flex gap-md mb-md">
+                        <div class="form-group flex-1">
                             <label class="form-label">Giá nhập (VNĐ) *</label>
                             <input type="number" class="form-input-plain" name="importPrice"
                                    step="1" min="0" value="${part.importPrice}" required>
                         </div>
-                        <div class="form-group" style="flex:1">
+                        <div class="form-group flex-1">
                             <label class="form-label">Giá bán (VNĐ) *</label>
                             <input type="number" class="form-input-plain" name="unitPrice"
                                    step="1" min="0" value="${part.unitPrice}" required>
                         </div>
                     </div>
-                    <div class="form-row" style="display:flex; gap:var(--spacing-md); margin-bottom:var(--spacing-lg)">
-                        <div class="form-group" style="flex:1">
+                    <div class="form-row flex gap-md mb-lg">
+                        <div class="form-group flex-1">
                             <label class="form-label">Ngưỡng tối thiểu</label>
                             <input type="number" class="form-input-plain" name="minStock"
                                    min="0" value="${not empty part ? part.minStock : 5}">
                         </div>
-                        <div class="form-group" style="flex:1">
+                        <div class="form-group flex-1">
                             <label class="form-label">Bảo hành (tháng)</label>
                             <input type="number" class="form-input-plain" name="warrantyMonths"
                                    min="0" value="${not empty part ? part.warrantyMonths : 0}"
@@ -82,7 +82,7 @@
                         </div>
                     </div>
 
-                    <div style="display:flex; gap:var(--spacing-sm); justify-content:flex-end">
+                    <div class="flex gap-sm justify-end">
                         <a href="Parts" class="btn btn-secondary btn-sm">Hủy</a>
                         <button type="submit" class="btn btn-primary btn-sm">
                             <i class="bi bi-${not empty part ? 'check-lg' : 'plus-lg'}"></i>

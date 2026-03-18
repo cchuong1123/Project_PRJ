@@ -1,0 +1,81 @@
+/* ============================================================
+   STAFF.CSS - Style riêng cho trang Nhân sự
+   ============================================================ */
+
+/* --- Page Header --- */
+.staff-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.staff-header h2 {
+    font-size: var(--font-size-xl);
+    font-weight: 800;
+}
+
+.staff-header h2 i {
+    color: var(--primary);
+    margin-right: 6px;
+}
+
+/* --- Summary --- */
+.staff-summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* --- Status Badges --- */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.status-badge i {
+    font-size: 0.7rem;
+}
+
+.status-active {
+    background: var(--success-light);
+    color: var(--success);
+}
+
+.status-locked {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--danger);
+}
+
+/* --- Success Button --- */
+.btn-success {
+    background: var(--success);
+    color: white;
+    border: none;
+}
+
+.btn-success:hover {
+    background: #219a52;
+    color: white;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .staff-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .staff-summary {
+        grid-template-columns: 1fr;
+    }
+}

@@ -38,7 +38,7 @@
                                     <i class="bi bi-box-seam-fill"></i>
                                 </div>
                                 <div>
-                                    <div class="summary-card-value">${parts.size()}</div>
+                                    <div class="summary-card-value">${totalParts}</div>
                                     <div class="summary-card-label">Tổng phụ tùng</div>
                                 </div>
                             </div>
@@ -107,7 +107,7 @@
                                         <c:forEach var="p" items="${parts}" varStatus="loop">
                                             <tr>
                                                 <td>${loop.index + 1}</td>
-                                                <td style="font-weight:600; color:var(--text-heading)">${p.partName}
+                                                <td class="font-semibold text-heading">${p.partName}
                                                 </td>
                                                 <td><span class="sku-code">${p.sku}</span></td>
                                                 <td>
@@ -128,7 +128,7 @@
                                                             ${p.warrantyMonths} tháng
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <span style="color:var(--text-muted)">—</span>
+                                                            <span class="text-muted">—</span>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
@@ -149,9 +149,9 @@
                                         </c:forEach>
                                         <c:if test="${empty parts}">
                                             <tr>
-                                                <td colspan="8" class="text-center" style="padding:40px;">
+                                                <td colspan="8" class="text-center p-xl">
                                                     <div class="empty-state">
-                                                        <i class="bi bi-inbox" style="display:block"></i>
+                                                        <i class="bi bi-inbox d-block"></i>
                                                         <h3>Không tìm thấy phụ tùng</h3>
                                                         <p>Thử tìm kiếm với từ khóa khác hoặc thêm phụ tùng mới.</p>
                                                     </div>
@@ -165,8 +165,7 @@
 
                         <!-- Pagination -->
                         <c:if test="${totalPages > 1}">
-                            <div
-                                style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:var(--spacing-lg); padding:var(--spacing-md) 0">
+                            <div class="flex flex-center items-center gap-sm mt-lg py-md">
                                 <c:set var="pageParams" value="" />
                                 <c:if test="${not empty keyword}">
                                     <c:set var="pageParams" value="&keyword=${keyword}" />
@@ -180,8 +179,7 @@
 
                                 <c:forEach var="i" begin="1" end="${totalPages}">
                                     <a href="Parts?page=${i}${pageParams}"
-                                        class="btn btn-sm ${i == currentPage ? 'btn-primary' : 'btn-outline'}"
-                                        style="min-width:36px; text-align:center">${i}</a>
+                                        class="btn btn-sm ${i == currentPage ? 'btn-primary' : 'btn-outline'} min-w-36 text-center">${i}</a>
                                 </c:forEach>
 
                                 <c:if test="${currentPage < totalPages}">

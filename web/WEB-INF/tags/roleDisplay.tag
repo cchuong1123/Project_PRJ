@@ -4,5 +4,6 @@
 <c:choose>
     <c:when test="${role == 'admin'}">Quản trị viên</c:when>
     <c:when test="${role == 'mechanic'}">Thợ sửa chữa</c:when>
+    <c:when test="${role == 'staff'}">Thu ngân</c:when>
     <c:otherwise>Nhân viên</c:otherwise>
 </c:choose>

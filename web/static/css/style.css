@@ -188,6 +188,10 @@ a:hover {
     color: var(--danger);
 }
 
+.text-info {
+    color: var(--info);
+}
+
 .text-center {
     text-align: center;
 }
@@ -322,6 +326,18 @@ a:hover {
     grid-template-columns: repeat(4, 1fr);
 }
 
+/* Sizing Extensions */
+.max-w-500 { max-width: 500px; margin: 0 auto; }
+.max-w-600 { max-width: 600px; margin: 0 auto; }
+.max-w-650 { max-width: 650px; margin: 0 auto; }
+.max-w-800 { max-width: 800px; margin: 0 auto; }
+.min-w-36 { min-width: 36px; }
+
+/* Flex Extensions */
+.flex-1 { flex: 1; }
+.justify-end { justify-content: flex-end; }
+.align-start { align-items: flex-start; }
+
 /* Spacing */
 .mt-sm {
     margin-top: var(--spacing-sm);
@@ -363,6 +379,16 @@ a:hover {
     padding: var(--spacing-md);
 }
 
+.py-md {
+    padding-top: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+}
+
+.px-md {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+}
+
 .p-lg {
     padding: var(--spacing-lg);
 }
@@ -371,6 +397,41 @@ a:hover {
     padding: var(--spacing-xl);
 }
 
+.mb-0 { margin-bottom: 0; }
+.mb-xs { margin-bottom: var(--spacing-xs); }
+.mt-xs { margin-top: var(--spacing-xs); }
+.pt-sm { padding-top: var(--spacing-sm); }
+.pt-md { padding-top: var(--spacing-md); }
+.gap-xs { gap: var(--spacing-xs); }
+
+/* Typography Extras */
+.italic { font-style: italic; }
+.text-heading { color: var(--text-heading); }
+
+/* Border Extras */
+.border-top { border-top: 1px solid var(--card-border); }
+.border-top-2 { border-top: 2px solid var(--card-border); }
+
+/* Display / Layout */
+.w-100 { width: 100%; }
+.w-40px { width: 40px; }
+.w-140px { width: 140px; }
+.min-w-250 { min-width: 250px; }
+.inline-block { display: inline-block; }
+
+.ps-48 { padding-left: 48px; }
+
+/* Custom Buttons */
+.btn-purple { 
+    background: rgba(156, 39, 176, 0.1); 
+    color: #9c27b0; 
+    border: 1px solid rgba(156, 39, 176, 0.2); 
+}
+.btn-purple:hover {
+    background: rgba(156, 39, 176, 0.2);
+    color: #8e24aa;
+    text-decoration: none;
+}
 
 /* --- Cards & Panels (Glassmorphism) ------------------------ */
 .card-glass {

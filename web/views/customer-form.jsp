@@ -27,42 +27,42 @@
             <i class="bi bi-arrow-left"></i> Quay lại danh sách
         </a>
 
-        <div class="detail-card" style="max-width:600px">
+        <div class="detail-card max-w-600">
             <h3>
                 <i class="bi bi-person-${not empty customer ? 'gear' : 'plus-fill'}"></i>
                 ${not empty customer ? 'Sửa khách hàng' : 'Thêm khách hàng mới'}
             </h3>
 
-            <form action="Customers" method="POST" style="margin-top:var(--spacing-lg)">
+            <form action="Customers" method="POST" class="mt-lg">
                 <input type="hidden" name="action" value="${not empty customer ? 'editCustomer' : 'addCustomer'}">
                 <c:if test="${not empty customer}">
                     <input type="hidden" name="customerID" value="${customer.customerID}">
                 </c:if>
 
-                <div class="form-group" style="margin-bottom:var(--spacing-md)">
+                <div class="form-group mb-md">
                     <label class="form-label">Họ tên *</label>
                     <input type="text" class="form-input-plain" name="fullName"
                         value="${customer.fullName}" required>
                 </div>
-                <div class="form-row" style="display:flex; gap:var(--spacing-md); margin-bottom:var(--spacing-md)">
-                    <div class="form-group" style="flex:1">
+                <div class="form-row flex gap-md mb-md">
+                    <div class="form-group flex-1">
                         <label class="form-label">Số điện thoại *</label>
                         <input type="text" class="form-input-plain" name="phone"
                             value="${customer.phone}" required>
                     </div>
-                    <div class="form-group" style="flex:1">
+                    <div class="form-group flex-1">
                         <label class="form-label">Email</label>
                         <input type="email" class="form-input-plain" name="email"
                             value="${customer.email}">
                     </div>
                 </div>
-                <div class="form-group" style="margin-bottom:var(--spacing-lg)">
+                <div class="form-group mb-lg">
                     <label class="form-label">Địa chỉ</label>
                     <input type="text" class="form-input-plain" name="address"
                         value="${customer.address}">
                 </div>
 
-                <div style="display:flex; gap:var(--spacing-sm); justify-content:flex-end">
+                <div class="flex gap-sm justify-end">
                     <a href="Customers" class="btn btn-secondary btn-sm">Hủy</a>
                     <button type="submit" class="btn btn-primary btn-sm">
                         <i class="bi bi-${not empty customer ? 'check-lg' : 'plus-lg'}"></i>

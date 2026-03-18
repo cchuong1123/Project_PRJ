@@ -138,7 +138,7 @@
                                                             <a href="Orders?action=detail&id=${inv.orderID}"
                                                                class="order-link">#${inv.orderID}</a>
                                                         </td>
-                                                        <td style="font-size:var(--font-size-xs); color:var(--text-muted)">
+                                                        <td class="text-xs text-muted">
                                                             <fmt:formatDate value="${inv.paidAt}" pattern="dd/MM/yyyy HH:mm" />
                                                         </td>
                                                         <td>
@@ -160,23 +160,23 @@
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </td>
-                                                        <td style="font-weight:700; color:var(--primary)">
+                                                        <td class="font-bold text-primary">
                                                             <fmt:formatNumber value="${inv.totalAmount}" type="number"
                                                                 groupingUsed="true" />đ
                                                         </td>
-                                                        <td style="font-weight:600; color:var(--text-muted)">
+                                                        <td class="font-semibold text-muted">
                                                             <fmt:formatNumber value="${inv.cost}" type="number" groupingUsed="true" />đ
                                                         </td>
-                                                        <td style="font-weight:700; color:var(--success)">
+                                                        <td class="font-bold text-success">
                                                             <fmt:formatNumber value="${inv.profit}" type="number" groupingUsed="true" />đ
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
                                                 <c:if test="${empty invoices}">
                                                     <tr>
-                                                        <td colspan="6" class="text-center" style="padding:40px">
+                                                        <td colspan="6" class="text-center p-xl">
                                                             <div class="empty-state">
-                                                                <i class="bi bi-clipboard-x" style="display:block"></i>
+                                                                <i class="bi bi-clipboard-x d-block"></i>
                                                                 <h3>Không có hóa đơn nào</h3>
                                                                 <p>Không tìm thấy hóa đơn trong khoảng thời gian đã chọn.</p>
                                                             </div>

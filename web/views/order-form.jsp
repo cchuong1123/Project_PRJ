@@ -29,15 +29,15 @@
             <i class="bi bi-arrow-left"></i> Quay lại danh sách
         </a>
 
-        <div class="detail-card" style="max-width:650px">
+        <div class="detail-card max-w-650">
             <h3>
                 <i class="bi bi-plus-circle"></i> Tạo phiếu sửa chữa
             </h3>
 
-            <form action="Orders" method="POST" style="margin-top:var(--spacing-lg)">
+            <form action="Orders" method="POST" class="mt-lg">
                 <input type="hidden" name="action" value="create">
 
-                <div class="form-group" style="margin-bottom:var(--spacing-md)">
+                <div class="form-group mb-md">
                     <label class="form-label">Chọn xe (Biển số — Khách hàng) *</label>
                     <select class="form-input-plain" name="vehicleID" id="vehicleSelect" required>
                         <option value="">-- Chọn xe --</option>
@@ -50,7 +50,7 @@
                     </select>
                 </div>
 
-                <div class="form-group" style="margin-bottom:var(--spacing-md)">
+                <div class="form-group mb-md">
                     <label class="form-label">Thợ phụ trách *</label>
                     <select class="form-input-plain" name="mechanicID" required>
                         <option value="">-- Chọn thợ --</option>
@@ -60,13 +60,13 @@
                     </select>
                 </div>
 
-                <div class="form-group" style="margin-bottom:var(--spacing-lg)">
+                <div class="form-group mb-lg">
                     <label class="form-label">Mô tả sự cố</label>
                     <textarea class="form-input-plain" name="description" rows="3"
                         placeholder="Mô tả tình trạng xe, yêu cầu sửa chữa..."></textarea>
                 </div>
 
-                <div style="display:flex; gap:var(--spacing-sm); justify-content:flex-end">
+                <div class="flex gap-sm justify-end">
                     <a href="Orders" class="btn btn-secondary btn-sm">Hủy</a>
                     <button type="submit" class="btn btn-primary btn-sm">
                         <i class="bi bi-plus-lg"></i> Tạo phiếu
