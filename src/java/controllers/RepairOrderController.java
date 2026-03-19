@@ -155,6 +155,9 @@ public class RepairOrderController extends HttpServlet {
             o.setDescription(request.getParameter("description"));
             o.setLaborCost(0);
             o.setStatus("Tiếp nhận");
+            if (u != null) {
+                o.setCreatedBy(u.getUserID());
+            }
             new RepairOrderDAO().addOrder(o);
             response.sendRedirect("Orders");
 

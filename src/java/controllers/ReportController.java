@@ -50,7 +50,7 @@ public class ReportController extends HttpServlet {
                 fromDate = monday.format(fmt);
                 toDate = sunday.format(fmt);
                 filterLabel = "Tuần này (" + monday.format(DateTimeFormatter.ofPattern("dd/MM"))
-                            + " - " + sunday.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + ")";
+                        + " - " + sunday.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + ")";
                 break;
 
             case "custom":
@@ -65,7 +65,7 @@ public class ReportController extends HttpServlet {
                 LocalDate from = LocalDate.parse(fromDate);
                 LocalDate to = LocalDate.parse(toDate);
                 filterLabel = "Từ " + from.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                            + " đến " + to.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                        + " đến " + to.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
                 break;
 
             case "month":
@@ -74,7 +74,8 @@ public class ReportController extends HttpServlet {
                 String yearParam = request.getParameter("year");
                 String monthParam = request.getParameter("month");
                 int year = (yearParam != null && !yearParam.isEmpty()) ? Integer.parseInt(yearParam) : today.getYear();
-                int month = (monthParam != null && !monthParam.isEmpty()) ? Integer.parseInt(monthParam) : today.getMonthValue();
+                int month = (monthParam != null && !monthParam.isEmpty()) ? Integer.parseInt(monthParam)
+                        : today.getMonthValue();
                 LocalDate firstDay = LocalDate.of(year, month, 1);
                 LocalDate lastDay = firstDay.with(TemporalAdjusters.lastDayOfMonth());
                 fromDate = firstDay.format(fmt);

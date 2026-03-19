@@ -58,6 +58,10 @@
                                                 </span>
                                             </div>
                                             <div class="detail-info-item">
+                                                <span class="detail-info-label">Người tạo</span>
+                                                <span class="detail-info-value">${order.createdByName != null ? order.createdByName : 'N/A'}</span>
+                                            </div>
+                                            <div class="detail-info-item">
                                                 <span class="detail-info-label">Khách hàng</span>
                                                 <span class="detail-info-value">${order.customerName}</span>
                                             </div>

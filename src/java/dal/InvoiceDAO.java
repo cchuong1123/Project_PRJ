@@ -13,12 +13,13 @@ public class InvoiceDAO extends DBContext {
 
     /**
      * Get total revenue between two dates (inclusive).
+     * 
      * @param fromDate format yyyy-MM-dd
      * @param toDate   format yyyy-MM-dd
      */
     public double getRevenueByDateRange(String fromDate, String toDate) {
         String sql = "SELECT ISNULL(SUM(TotalAmount), 0) AS Revenue FROM Invoices "
-                   + "WHERE CAST(PaidAt AS DATE) >= ? AND CAST(PaidAt AS DATE) <= ?";
+                + "WHERE CAST(PaidAt AS DATE) >= ? AND CAST(PaidAt AS DATE) <= ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, fromDate);
@@ -38,7 +39,7 @@ public class InvoiceDAO extends DBContext {
      */
     public int getTotalInvoicesByDateRange(String fromDate, String toDate) {
         String sql = "SELECT COUNT(*) AS Total FROM Invoices "
-                   + "WHERE CAST(PaidAt AS DATE) >= ? AND CAST(PaidAt AS DATE) <= ?";
+                + "WHERE CAST(PaidAt AS DATE) >= ? AND CAST(PaidAt AS DATE) <= ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, fromDate);
@@ -59,12 +60,12 @@ public class InvoiceDAO extends DBContext {
     public List<Invoice> getInvoicesByDateRange(String fromDate, String toDate) {
         List<Invoice> list = new ArrayList<>();
         String sql = "SELECT i.*, "
-                   + "ISNULL((SELECT SUM(op.Quantity * p.ImportPrice) "
-                   + "        FROM OrderParts op JOIN Parts p ON op.PartID = p.PartID "
-                   + "        WHERE op.OrderID = i.OrderID), 0) AS TotalCost "
-                   + "FROM Invoices i "
-                   + "WHERE CAST(i.PaidAt AS DATE) >= ? AND CAST(i.PaidAt AS DATE) <= ? "
-                   + "ORDER BY i.PaidAt DESC";
+                + "ISNULL((SELECT SUM(op.Quantity * p.ImportPrice) "
+                + "        FROM OrderParts op JOIN Parts p ON op.PartID = p.PartID "
+                + "        WHERE op.OrderID = i.OrderID), 0) AS TotalCost "
+                + "FROM Invoices i "
+                + "WHERE CAST(i.PaidAt AS DATE) >= ? AND CAST(i.PaidAt AS DATE) <= ? "
+                + "ORDER BY i.PaidAt DESC";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, fromDate);

@@ -11,14 +11,15 @@ import java.util.logging.Logger;
 
 public class RepairOrderDAO extends DBContext {
 
-    private static final String SELECT_ALL =
-            "SELECT ro.*, v.LicensePlate, ISNULL(v.Brand,'') + ' ' + ISNULL(v.Model,'') AS VehicleInfo, "
+    private static final String SELECT_ALL = "SELECT ro.*, v.LicensePlate, ISNULL(v.Brand,'') + ' ' + ISNULL(v.Model,'') AS VehicleInfo, "
             + "c.FullName AS CustomerName, c.Phone AS CustomerPhone, u.FullName AS MechanicName, "
+            + "creator.FullName AS CreatedByName, "
             + "ISNULL((SELECT SUM(op.Quantity * op.UnitPrice) FROM OrderParts op WHERE op.OrderID = ro.OrderID), 0) AS PartsTotal "
             + "FROM RepairOrders ro "
             + "JOIN Vehicles v ON ro.VehicleID = v.VehicleID "
             + "JOIN Customers c ON v.CustomerID = c.CustomerID "
-            + "JOIN Users u ON ro.MechanicID = u.UserID ";
+            + "JOIN Users u ON ro.MechanicID = u.UserID "
+            + "LEFT JOIN Users creator ON ro.CreatedBy = creator.UserID ";
 
     public List<RepairOrder> getAllOrders() {
         List<RepairOrder> list = new ArrayList<>();
@@ -26,7 +27,9 @@ public class RepairOrderDAO extends DBContext {
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) { list.add(mapRow(rs)); }
+            while (rs.next()) {
+                list.add(mapRow(rs));
+            }
         } catch (SQLException ex) {
             Logger.getLogger(RepairOrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -40,7 +43,9 @@ public class RepairOrderDAO extends DBContext {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, status);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) { list.add(mapRow(rs)); }
+            while (rs.next()) {
+                list.add(mapRow(rs));
+            }
         } catch (SQLException ex) {
             Logger.getLogger(RepairOrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +58,9 @@ public class RepairOrderDAO extends DBContext {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) { return mapRow(rs); }
+            if (rs.next()) {
+                return mapRow(rs);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(RepairOrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -61,7 +68,7 @@ public class RepairOrderDAO extends DBContext {
     }
 
     public boolean addOrder(RepairOrder o) {
-        String sql = "INSERT INTO RepairOrders (VehicleID, MechanicID, Status, Description, LaborCost) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO RepairOrders (VehicleID, MechanicID, Status, Description, LaborCost, CreatedBy) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, o.getVehicleID());
@@ -69,6 +76,7 @@ public class RepairOrderDAO extends DBContext {
             ps.setString(3, o.getStatus() != null ? o.getStatus() : "Tiếp nhận");
             ps.setString(4, o.getDescription());
             ps.setDouble(5, o.getLaborCost());
+            ps.setInt(6, o.getCreatedBy());
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(RepairOrderDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -144,7 +152,8 @@ public class RepairOrderDAO extends DBContext {
 
     public List<RepairOrder> searchOrders(String keyword) {
         List<RepairOrder> list = new ArrayList<>();
-        String sql = SELECT_ALL + "WHERE c.FullName LIKE ? OR v.LicensePlate LIKE ? OR c.Phone LIKE ? ORDER BY ro.CreatedAt DESC";
+        String sql = SELECT_ALL
+                + "WHERE c.FullName LIKE ? OR v.LicensePlate LIKE ? OR c.Phone LIKE ? ORDER BY ro.CreatedAt DESC";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             String kw = "%" + keyword + "%";
@@ -152,7 +161,9 @@ public class RepairOrderDAO extends DBContext {
             ps.setString(2, kw);
             ps.setString(3, kw);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) { list.add(mapRow(rs)); }
+            while (rs.next()) {
+                list.add(mapRow(rs));
+            }
         } catch (SQLException ex) {
             Logger.getLogger(RepairOrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -173,7 +184,18 @@ public class RepairOrderDAO extends DBContext {
         o.setCustomerName(rs.getString("CustomerName"));
         o.setCustomerPhone(rs.getString("CustomerPhone"));
         o.setMechanicName(rs.getString("MechanicName"));
-        try { o.setPartsTotal(rs.getDouble("PartsTotal")); } catch (SQLException e) { /* PartsTotal not in query */ }
+        try {
+            o.setCreatedBy(rs.getInt("CreatedBy"));
+        } catch (SQLException e) {
+        }
+        try {
+            o.setCreatedByName(rs.getString("CreatedByName"));
+        } catch (SQLException e) {
+        }
+        try {
+            o.setPartsTotal(rs.getDouble("PartsTotal"));
+        } catch (SQLException e) {
+            /* PartsTotal not in query */ }
         return o;
     }
 }

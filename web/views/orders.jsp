@@ -122,10 +122,6 @@
                                             <th>Xe</th>
                                             <th>Thợ phụ trách</th>
                                             <th>Trạng thái</th>
-                                            <c:if test="${sessionScope.user.role != 'mechanic'}">
-                                                <th>Tiền phụ tùng</th>
-                                                <th>Phí Dịch Vụ</th>
-                                            </c:if>
                                             <th>Ngày tạo</th>
                                             <c:if test="${sessionScope.user.role != 'mechanic'}">
                                                 <th>Khách phải trả</th>
@@ -153,16 +149,6 @@
                                                 <td>
                                                     <mt:statusBadge status="${o.status}" />
                                                 </td>
-                                                <c:if test="${sessionScope.user.role != 'mechanic'}">
-                                                    <td class="font-semibold">
-                                                        <fmt:formatNumber value="${o.partsTotal}" type="number"
-                                                            groupingUsed="true" />đ
-                                                    </td>
-                                                    <td class="font-semibold">
-                                                        <fmt:formatNumber value="${o.laborCost}" type="number"
-                                                            groupingUsed="true" />đ
-                                                    </td>
-                                                </c:if>
                                                 <td class="text-xs text-muted">
                                                     <fmt:formatDate value="${o.createdAt}" pattern="dd/MM/yyyy HH:mm" />
                                                 </td>
@@ -191,13 +177,15 @@
                                         </c:forEach>
                                         <c:if test="${empty orders}">
                                             <tr>
-                                                <td colspan="${sessionScope.user.role == 'mechanic' ? 7 : 10}" class="text-center p-xl">
+                                                <td colspan="${sessionScope.user.role == 'mechanic' ? 7 : 8}"
+                                                    class="text-center p-xl">
                                                     <div class="empty-state">
                                                         <i class="bi bi-clipboard-x d-block"></i>
                                                         <h3>Chưa có phiếu sửa chữa nào</h3>
                                                         <c:choose>
                                                             <c:when test="${sessionScope.user.role == 'mechanic'}">
-                                                                <p>Hiện chưa có phiếu sửa chữa nào được phân công cho bạn.</p>
+                                                                <p>Hiện chưa có phiếu sửa chữa nào được phân công cho
+                                                                    bạn.</p>
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <p>Nhấn "Tạo đơn" để bắt đầu.</p>

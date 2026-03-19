@@ -18,6 +18,8 @@ public class RepairOrder {
     private String vehicleInfo; // Brand + Model
     private String mechanicName;
     private double partsTotal;
+    private int createdBy;
+    private String createdByName;
 
     public RepairOrder() {
     }
@@ -60,4 +62,10 @@ public class RepairOrder {
 
     public double getPartsTotal() { return partsTotal; }
     public void setPartsTotal(double partsTotal) { this.partsTotal = partsTotal; }
+
+    public int getCreatedBy() { return createdBy; }
+    public void setCreatedBy(int createdBy) { this.createdBy = createdBy; }
+
+    public String getCreatedByName() { return createdByName; }
+    public void setCreatedByName(String createdByName) { this.createdByName = createdByName; }
 }
