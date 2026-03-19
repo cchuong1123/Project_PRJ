@@ -289,6 +289,10 @@
                                                         <span class="detail-info-value">${invoice.paymentMethod}</span>
                                                     </div>
                                                     <div class="detail-info-item mb-sm">
+                                                        <span class="detail-info-label">Thu ngân</span>
+                                                        <span class="detail-info-value">${invoice.cashierName != null ? invoice.cashierName : 'N/A'}</span>
+                                                    </div>
+                                                    <div class="detail-info-item mb-sm">
                                                         <span class="detail-info-label">Ngày thanh toán</span>
                                                         <span class="detail-info-value">
                                                             <fmt:formatDate value="${invoice.paidAt}"

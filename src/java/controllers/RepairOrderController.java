@@ -215,7 +215,9 @@ public class RepairOrderController extends HttpServlet {
             // Calculate total: labor + parts
             double partsTotal = new OrderPartDAO().getTotalPartsAmount(orderId);
             double total = laborCost + partsTotal;
-            new InvoiceDAO().createInvoice(orderId, total, paymentMethod);
+            models.User currentUser = (models.User) request.getSession().getAttribute("user");
+            int cashierId = (currentUser != null) ? currentUser.getUserID() : 0;
+            new InvoiceDAO().createInvoice(orderId, total, paymentMethod, cashierId);
             // Auto update status to "Hoàn thành"
             new RepairOrderDAO().updateStatus(orderId, "Hoàn thành");
             response.sendRedirect("Orders?action=detail&id=" + orderId);

@@ -13,7 +13,27 @@ public class Invoice {
     private double cost;
     private double profit;
 
+    // Cashier info
+    private int cashierID;
+    private String cashierName;
+
     public Invoice() {
+    }
+
+    public int getCashierID() {
+        return cashierID;
+    }
+
+    public void setCashierID(int cashierID) {
+        this.cashierID = cashierID;
+    }
+
+    public String getCashierName() {
+        return cashierName;
+    }
+
+    public void setCashierName(String cashierName) {
+        this.cashierName = cashierName;
     }
 
     public int getInvoiceID() {
