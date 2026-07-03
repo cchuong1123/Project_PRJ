@@ -59,7 +59,8 @@
                                             </div>
                                             <div class="detail-info-item">
                                                 <span class="detail-info-label">Người tạo</span>
-                                                <span class="detail-info-value">${order.createdByName != null ? order.createdByName : 'N/A'}</span>
+                                                <span class="detail-info-value">${order.createdByName != null ?
+                                                    order.createdByName : 'N/A'}</span>
                                             </div>
                                             <div class="detail-info-item">
                                                 <span class="detail-info-label">Khách hàng</span>
@@ -121,7 +122,8 @@
                                                                 <input type="hidden" name="action" value="updateStatus">
                                                                 <input type="hidden" name="orderID"
                                                                     value="${order.orderID}">
-                                                                <input type="hidden" name="newStatus" value="Hoàn thành">
+                                                                <input type="hidden" name="newStatus"
+                                                                    value="Hoàn thành">
                                                                 <button type="submit" class="btn btn-success btn-sm">
                                                                     <i class="bi bi-check-circle"></i> Hoàn thành
                                                                 </button>
@@ -160,7 +162,8 @@
                                         <div class="flex flex-between items-center mb-md">
                                             <h3 class="mb-0"><i class="bi bi-box-seam"></i> Phụ tùng sử dụng
                                             </h3>
-                                            <c:if test="${sessionScope.user.role != 'mechanic' && order.status != 'Hoàn thành' && order.status != 'Đã giao'}">
+                                            <c:if
+                                                test="${sessionScope.user.role != 'mechanic' && order.status != 'Hoàn thành' && order.status != 'Đã giao'}">
                                                 <a href="Orders?action=addPart&orderId=${order.orderID}"
                                                     class="btn btn-primary btn-sm">
                                                     <i class="bi bi-plus-lg"></i> Thêm phụ tùng
@@ -215,8 +218,10 @@
                                                             <c:choose>
                                                                 <c:when test="${not empty op.warrantyEndDate}">
                                                                     <span class="text-xs">
-                                                                        <fmt:parseDate value="${op.warrantyEndDate}" pattern="yyyy-MM-dd" var="parsedDate" />
-                                                                        <fmt:formatDate value="${parsedDate}" pattern="dd/MM/yyyy" />
+                                                                        <fmt:parseDate value="${op.warrantyEndDate}"
+                                                                            pattern="yyyy-MM-dd" var="parsedDate" />
+                                                                        <fmt:formatDate value="${parsedDate}"
+                                                                            pattern="dd/MM/yyyy" />
                                                                     </span>
                                                                 </c:when>
                                                                 <c:otherwise>
@@ -290,7 +295,8 @@
                                                     </div>
                                                     <div class="detail-info-item mb-sm">
                                                         <span class="detail-info-label">Thu ngân</span>
-                                                        <span class="detail-info-value">${invoice.cashierName != null ? invoice.cashierName : 'N/A'}</span>
+                                                        <span class="detail-info-value">${invoice.cashierName != null ?
+                                                            invoice.cashierName : 'N/A'}</span>
                                                     </div>
                                                     <div class="detail-info-item mb-sm">
                                                         <span class="detail-info-label">Ngày thanh toán</span>
